@@ -16,7 +16,7 @@ export default function Footer() {
                 alt="Apartments12"
                 width={40}
                 height={40}
-                className="brightness-0 invert opacity-80 object-contain"
+                className="opacity-80 object-contain"
               />
               <h2 className="font-serif text-2xl text-warm-white">
                 Apartments<span className="text-gold">12</span>

@@ -60,7 +60,7 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
             alt="Apartments12"
             width={96}
             height={96}
-            className="brightness-0 invert drop-shadow-2xl object-contain"
+            className="drop-shadow-2xl object-contain"
             priority
           />
         </motion.div>
