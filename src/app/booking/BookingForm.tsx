@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { submitBooking } from "./actions";
 import { Loader2, Calendar as CalendarIcon } from "lucide-react";

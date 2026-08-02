@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import SortableImageGallery from "./SortableImageGallery";
-import { saveRoom } from "../actions";
+import { saveRoom } from "@/app/admin/rooms/actions";
 
 export default function RoomForm({ initialData }: { initialData?: any }) {
   const [images, setImages] = useState<string[]>(

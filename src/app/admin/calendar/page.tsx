@@ -41,11 +41,6 @@ export default async function CalendarPage({ searchParams }: { searchParams: { r
           <select 
             name="roomId"
             defaultValue={selectedRoomId}
-            // Inline onChange for simple navigation
-            onChange={(e) => {
-              // This relies on client JS, safe for admin panel typically.
-              // We could use a Client Component for proper routing but this works if JS is enabled.
-            }}
             className="bg-black/20 border border-white/10 rounded px-4 py-2 text-white outline-none"
           >
             {rooms.map(room => (
