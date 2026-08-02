@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -40,9 +40,9 @@ export default function Navigation() {
             <Image
               src="/images/logo.png"
               alt="Apartments12"
-              width={40}
-              height={40}
-              className="opacity-90 group-hover:opacity-100 transition-all duration-300"
+              width={72}
+              height={72}
+              className="brightness-0 invert opacity-90 group-hover:opacity-100 transition-all duration-300 object-contain"
             />
             <span className="font-serif text-xl tracking-wider text-warm-white group-hover:text-gold transition-colors duration-300">
               Apartments<span className="text-gold">12</span>

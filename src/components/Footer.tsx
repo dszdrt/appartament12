@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,9 +14,9 @@ export default function Footer() {
               <Image
                 src="/images/logo.png"
                 alt="Apartments12"
-                width={36}
-                height={36}
-                className="opacity-80"
+                width={56}
+                height={56}
+                className="brightness-0 invert opacity-80 object-contain"
               />
               <h2 className="font-serif text-2xl text-warm-white">
                 Apartments<span className="text-gold">12</span>

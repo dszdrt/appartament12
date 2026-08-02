@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -58,9 +58,9 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
           <Image
             src="/images/logo.png"
             alt="Apartments12"
-            width={100}
-            height={100}
-            className="drop-shadow-2xl"
+            width={160}
+            height={160}
+            className="brightness-0 invert drop-shadow-2xl object-contain"
             priority
           />
         </motion.div>
