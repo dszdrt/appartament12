@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -38,7 +38,7 @@ export default function Navigation() {
           {/* Logo */}
           <Link href="/" className="relative z-50 flex items-center gap-3 group">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.jpg"
               alt="Apartments12"
               width={40}
               height={40}

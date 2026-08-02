@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -56,7 +56,7 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
           className="mb-8"
         >
           <Image
-            src="/images/logo.png"
+            src="/images/logo.jpg"
             alt="Apartments12"
             width={100}
             height={100}
