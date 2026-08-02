@@ -4,6 +4,8 @@ import { db as prisma } from "@/lib/db";
 import { roomMeta } from "@/lib/room-data";
 import { getAllRooms, getCommonImages } from "@/lib/images";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   try {
     // 1. Seed admin
