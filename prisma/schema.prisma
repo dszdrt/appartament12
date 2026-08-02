@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Room {
+  id             String      @id @default(cuid())
+  slug           String      @unique
+  title          String
+  subtitle       String?
+  description    String?
+  price          Int         @default(0)
+  capacity       Int         @default(2)
+  beds           Int         @default(1)
+  area           Int         @default(20)
+  floor          Int         @default(1)
+  status         String      @default("ACTIVE") // ACTIVE, DISABLED
+  seoTitle       String?
+  seoDescription String?
+  order          Int         @default(0)
+  
+  images         RoomImage[]
+  amenities      Amenity[]   @relation("RoomToAmenity")
+  bookings       Booking[]
+  availabilities RoomAvailability[]
+
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  deletedAt      DateTime?   // For soft delete
+}
+
+model RoomImage {
+  id        String   @id @default(cuid())
+  url       String
+  order     Int      @default(0)
+  isCover   Boolean  @default(false)
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId    String
+}
+
+model Amenity {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String?
+  rooms     Room[]   @relation("RoomToAmenity")
+}
+
+model Gallery {
+  id        String   @id @default(cuid())
+  url       String
+  category  String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model BookingSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model HomepageSection {
+  id          String   @id
+  title       String?
+  subtitle    String?
+  content     String?
+  buttonText  String?
+  buttonLink  String?
+  updatedAt   DateTime @updatedAt
+}
+
+model HeroSlide {
+  id        String   @id @default(cuid())
+  url       String
+  title     String?
+  subtitle  String?
+  order     Int      @default(0)
+}
+
+model Booking {
+  id           String   @id @default(cuid())
+  guestName    String
+  phone        String
+  email        String?
+  arrivalDate  DateTime
+  departureDate DateTime
+  guests       Int
+  notes        String?
+  status       String   @default("PENDING") // PENDING, APPROVED, REJECTED, COMPLETED, CANCELLED
+  
+  room         Room     @relation(fields: [roomId], references: [id])
+  roomId       String
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model RoomAvailability {
+  id           String   @id @default(cuid())
+  date         DateTime
+  status       String   // OCCUPIED, MAINTENANCE, UNAVAILABLE
+  room         Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId       String
+
+  @@unique([roomId, date])
+}

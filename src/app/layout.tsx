@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Providers } from '@/components/Providers';
 
 export const metadata: Metadata = {
   title: "Apartments12 — Бутик-отель",
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="ru" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
