@@ -38,11 +38,11 @@ export default function Navigation() {
           {/* Logo */}
           <Link href="/" className="relative z-50 flex items-center gap-3 group">
             <Image
-              src="/images/logo.jpg"
+              src="/images/logo.png"
               alt="Apartments12"
               width={40}
               height={40}
-              className="brightness-0 invert opacity-90 group-hover:opacity-100 transition-all duration-300"
+              className="opacity-90 group-hover:opacity-100 transition-all duration-300"
             />
             <span className="font-serif text-xl tracking-wider text-warm-white group-hover:text-gold transition-colors duration-300">
               Apartments<span className="text-gold">12</span>

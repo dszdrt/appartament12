@@ -12,11 +12,11 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src="/images/logo.jpg"
+                src="/images/logo.png"
                 alt="Apartments12"
                 width={36}
                 height={36}
-                className="brightness-0 invert opacity-80"
+                className="opacity-80"
               />
               <h2 className="font-serif text-2xl text-warm-white">
                 Apartments<span className="text-gold">12</span>

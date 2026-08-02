@@ -56,11 +56,11 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
           className="mb-8"
         >
           <Image
-            src="/images/logo.jpg"
+            src="/images/logo.png"
             alt="Apartments12"
             width={100}
             height={100}
-            className="brightness-0 invert drop-shadow-2xl"
+            className="drop-shadow-2xl"
             priority
           />
         </motion.div>
