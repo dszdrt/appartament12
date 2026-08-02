@@ -8,11 +8,17 @@ export default function RoomForm({ initialData }: { initialData?: any }) {
   const [images, setImages] = useState<string[]>(
     initialData?.images?.map((img: any) => img.url) || []
   );
+  const [isPending, setIsPending] = useState(false);
 
   return (
     <form action={async (formData) => {
-      images.forEach(url => formData.append("images[]", url));
-      await saveRoom(formData, initialData?.id);
+      setIsPending(true);
+      try {
+        images.forEach(url => formData.append("images[]", url));
+        await saveRoom(formData, initialData?.id);
+      } finally {
+        setIsPending(false);
+      }
     }} className="space-y-8">
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -68,8 +74,8 @@ export default function RoomForm({ initialData }: { initialData?: any }) {
         <SortableImageGallery images={images} setImages={setImages} />
       </div>
 
-      <button type="submit" className="bg-gold text-charcoal px-8 py-3 rounded-lg font-medium hover:bg-gold/90 transition-colors">
-        Сохранить номер
+      <button type="submit" disabled={isPending} className={`bg-gold text-charcoal px-8 py-3 rounded-lg font-medium transition-colors ${isPending ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gold/90'}`}>
+        {isPending ? "Сохранение..." : "Сохранить номер"}
       </button>
     </form>
   );

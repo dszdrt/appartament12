@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { saveSiteSettings } from "./actions";
+import SubmitButton from "@/components/admin/SubmitButton";
 
 export default async function SettingsPage() {
   const settings = await db.siteSetting.findMany();
@@ -71,9 +72,7 @@ export default async function SettingsPage() {
             </div>
           </section>
 
-          <button type="submit" className="bg-gold text-charcoal px-8 py-3 rounded-lg font-medium hover:bg-gold/90 transition-colors">
-            Сохранить настройки
-          </button>
+          <SubmitButton>Сохранить настройки</SubmitButton>
         </form>
       </div>
     </div>
