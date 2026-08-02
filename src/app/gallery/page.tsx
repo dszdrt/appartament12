@@ -6,8 +6,8 @@ import { getCommonImages, getAllRooms } from '@/lib/images';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Галерея — Apartments 12',
-  description: 'Фотогалерея бутик-отеля Apartments 12. Территория, интерьеры и атмосфера.',
+  title: 'Галерея — Apartments12',
+  description: 'Фотогалерея бутик-отеля Apartments12. Территория, интерьеры и атмосфера.',
 };
 
 export default function GalleryPage() {
@@ -19,7 +19,7 @@ export default function GalleryPage() {
     ...commonImages,
     ...rooms.flatMap(room => room.images.slice(0, 2).map(img => ({
       ...img,
-      alt: `${room.nameRu} — Apartments 12`,
+      alt: `${room.nameRu} — Apartments12`,
     }))),
   ];
 

@@ -13,13 +13,13 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <Image
                 src="/images/logo.png"
-                alt="Apartments 12"
+                alt="Apartments12"
                 width={36}
                 height={36}
                 className="brightness-0 invert opacity-80"
               />
               <h2 className="font-serif text-2xl text-warm-white">
-                Apartments <span className="text-gold">12</span>
+                Apartments<span className="text-gold">12</span>
               </h2>
             </div>
             <p className="text-warm-white/40 text-sm leading-relaxed max-w-xs">
@@ -63,7 +63,7 @@ export default function Footer() {
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-warm-white/20 text-xs tracking-wider">
-            © {new Date().getFullYear()} Apartments 12. Все права защищены.
+            © {new Date().getFullYear()} Apartments12. Все права защищены.
           </p>
           <p className="text-warm-white/20 text-xs tracking-wider">
             Designed with ♥

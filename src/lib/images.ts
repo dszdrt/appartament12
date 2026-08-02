@@ -51,7 +51,7 @@ export function getCommonImages(): RoomImage[] {
   const files = scanDirectory(dir);
   return files.map(f => ({
     src: `/images/common/${f}`,
-    alt: 'Apartments 12 — отель',
+    alt: 'Apartments12 — отель',
   }));
 }
 
@@ -64,7 +64,7 @@ export function getRoom(slug: string): Room | null {
   const files = scanDirectory(dir);
   const images = files.map(f => ({
     src: `/images/${slug}/${f}`,
-    alt: `Апартаменты ${meta.nameRu} — Apartments 12`,
+    alt: `Апартаменты ${meta.nameRu} — Apartments12`,
   }));
   
   return {

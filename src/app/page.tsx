@@ -33,7 +33,7 @@ export default function HomePage() {
           </AnimatedSection>
           <AnimatedSection delay={0.3}>
             <p className="text-warm-white/50 text-lg leading-relaxed max-w-2xl mx-auto">
-              Apartments 12 — это не просто отель. Это коллекция из 10 уникальных пространств,
+              Apartments12 — это не просто отель. Это коллекция из 10 уникальных пространств,
               каждое из которых переносит вас в совершенно другой мир. От японского минимализма
               до африканского сафари — выберите свое путешествие.
             </p>

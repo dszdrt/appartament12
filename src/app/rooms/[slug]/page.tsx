@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+﻿import { notFound } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import RoomGallery from '@/components/RoomGallery';
 import BookingCard from '@/components/BookingCard';
@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!room) return {};
   const meta = roomMeta[slug];
   return {
-    title: `${room.nameRu} — Apartments 12`,
-    description: meta?.description || `Апартаменты ${room.nameRu} в бутик-отеле Apartments 12`,
+    title: `${room.nameRu} — Apartments12`,
+    description: meta?.description || `Апартаменты ${room.nameRu} в бутик-отеле Apartments12`,
   };
 }
 

@@ -57,7 +57,7 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
         >
           <Image
             src="/images/logo.png"
-            alt="Apartments 12"
+            alt="Apartments12"
             width={100}
             height={100}
             className="brightness-0 invert drop-shadow-2xl"
@@ -81,8 +81,7 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
           transition={{ duration: 1, delay: 0.9 }}
           className="font-serif text-5xl md:text-7xl lg:text-8xl text-warm-white mb-6 leading-tight"
         >
-          Apartments{' '}
-          <span className="text-gold italic">12</span>
+          Apartments<span className="text-gold italic">12</span>
         </motion.h1>
 
         <motion.div
