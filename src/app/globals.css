@@ -119,6 +119,11 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Precise CSS filter to convert black/white to #C9A96E gold */
+.filter-gold {
+  filter: brightness(0) saturate(100%) invert(70%) sepia(18%) saturate(1313%) hue-rotate(352deg) brightness(87%) contrast(92%);
+}
+
 /* Hero slideshow animation */
 @keyframes kenburns {
   0% {

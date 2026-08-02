@@ -60,7 +60,7 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
             alt="Apartments12"
             width={96}
             height={96}
-            className="drop-shadow-2xl object-contain"
+            className="filter-gold drop-shadow-2xl object-contain"
             priority
           />
         </motion.div>
@@ -70,7 +70,7 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.7 }}
         >
-          <p className="text-gold tracking-[0.3em] uppercase text-sm mb-6">
+          <p className="text-gold tracking-[0.3em] uppercase text-sm mb-6 font-bold drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
             Бутик-отель
           </p>
         </motion.div>

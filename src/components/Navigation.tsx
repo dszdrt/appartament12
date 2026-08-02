@@ -42,7 +42,7 @@ export default function Navigation() {
               alt="Apartments12"
               width={48}
               height={48}
-              className="opacity-90 group-hover:opacity-100 transition-all duration-300 object-contain"
+              className="filter-gold opacity-90 group-hover:opacity-100 transition-all duration-300 object-contain"
             />
             <span className="font-serif text-xl tracking-wider text-warm-white group-hover:text-gold transition-colors duration-300">
               Apartments<span className="text-gold">12</span>
