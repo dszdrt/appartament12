@@ -14,8 +14,8 @@ export default function Footer() {
               <Image
                 src="/images/logo.png"
                 alt="Apartments12"
-                width={56}
-                height={56}
+                width={40}
+                height={40}
                 className="brightness-0 invert opacity-80 object-contain"
               />
               <h2 className="font-serif text-2xl text-warm-white">
