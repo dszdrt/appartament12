@@ -10,9 +10,9 @@ export default function RoomForm({ initialData }: { initialData?: any }) {
   );
 
   return (
-    <form action={(formData) => {
+    <form action={async (formData) => {
       images.forEach(url => formData.append("images[]", url));
-      saveRoom(formData, initialData?.id);
+      await saveRoom(formData, initialData?.id);
     }} className="space-y-8">
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
