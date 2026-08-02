@@ -4,9 +4,10 @@ import { ArrowLeft } from "lucide-react";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 
-export default async function EditRoomPage({ params }: { params: { id: string } }) {
+export default async function EditRoomPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const room = await db.room.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: { images: { orderBy: { order: 'asc' } } }
   });
 
