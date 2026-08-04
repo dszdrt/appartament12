@@ -10,7 +10,12 @@ export default function BookingStatusSelect({ bookingId, currentStatus }: { book
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = e.target.value;
     startTransition(async () => {
-      await updateBookingStatus(bookingId, newStatus);
+      try {
+        await updateBookingStatus(bookingId, newStatus);
+      } catch (err: any) {
+        alert(err.message || "Произошла ошибка при обновлении статуса");
+        e.target.value = currentStatus;
+      }
     });
   };
 
