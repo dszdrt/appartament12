@@ -47,10 +47,14 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
 
     setLoading(true);
     try {
-      await submitBooking(formData);
+      const res = await submitBooking(formData);
+      if (res && res.error) {
+        alert(res.error);
+        return;
+      }
       setSubmitted(true);
     } catch (e) {
-      alert("Ошибка при отправке заявки. Пожалуйста, проверьте все поля.");
+      alert("Ошибка сети при отправке заявки. Пожалуйста, попробуйте еще раз.");
     } finally {
       setLoading(false);
     }

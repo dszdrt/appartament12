@@ -15,19 +15,19 @@ export async function submitBooking(formData: FormData) {
 
   // Validate required fields
   if (!guestName || !phone || !roomId || guests < 1) {
-    throw new Error("Пожалуйста, заполните все обязательные поля");
+    return { error: "Пожалуйста, заполните все обязательные поля" };
   }
 
   if (isNaN(arrivalDate.getTime()) || isNaN(departureDate.getTime())) {
-    throw new Error("Некорректные даты");
+    return { error: "Некорректные даты" };
   }
 
   if (arrivalDate >= departureDate) {
-    throw new Error("Дата выезда должна быть позже даты заезда");
+    return { error: "Дата выезда должна быть позже даты заезда" };
   }
 
   if (arrivalDate < new Date(new Date().setHours(0, 0, 0, 0))) {
-    throw new Error("Дата заезда не может быть в прошлом");
+    return { error: "Дата заезда не может быть в прошлом" };
   }
 
   // Check for date conflicts
@@ -44,7 +44,7 @@ export async function submitBooking(formData: FormData) {
   });
 
   if (conflicts.length > 0) {
-    throw new Error("Выбранные даты уже заняты. Пожалуйста, выберите другие даты.");
+    return { error: "Выбранные даты уже заняты. Пожалуйста, выберите другие даты." };
   }
 
   // Also check for overlapping approved bookings
@@ -58,21 +58,27 @@ export async function submitBooking(formData: FormData) {
   });
 
   if (overlapping.length > 0) {
-    throw new Error("На эти даты уже есть бронирование. Пожалуйста, выберите другие даты.");
+    return { error: "На эти даты уже есть бронирование. Пожалуйста, выберите другие даты." };
   }
 
-  await db.booking.create({
-    data: {
-      guestName,
-      phone,
-      email: email || null,
-      arrivalDate,
-      departureDate,
-      guests,
-      roomId,
-      notes: notes || null,
-    },
-  });
+  try {
+    await db.booking.create({
+      data: {
+        guestName,
+        phone,
+        email: email || null,
+        arrivalDate,
+        departureDate,
+        guests,
+        roomId,
+        notes: notes || null,
+      },
+    });
 
-  revalidatePath("/admin/bookings");
+    revalidatePath("/admin/bookings");
+    return { success: true };
+  } catch (err) {
+    console.error("Booking creation error:", err);
+    return { error: "Внутренняя ошибка сервера при сохранении заявки" };
+  }
 }
