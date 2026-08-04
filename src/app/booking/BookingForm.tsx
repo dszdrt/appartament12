@@ -219,7 +219,7 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
           </button>
           
           {isCalendarOpen && (
-            <div className="absolute z-50 top-full mt-2 left-0 bg-[#1A1A1A] border border-white/10 p-4 rounded-2xl shadow-2xl w-80 md:w-96">
+            <div className="absolute z-50 top-full mt-2 left-0 bg-[#1A1A1A] border border-white/10 p-4 rounded-2xl shadow-2xl w-[calc(100vw-32px)] sm:w-80 md:w-96">
               <div className="flex items-center justify-between mb-4">
                 <button type="button" onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors">
                   <ChevronLeft className="w-5 h-5" />

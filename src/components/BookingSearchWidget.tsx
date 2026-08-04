@@ -92,7 +92,7 @@ export default function BookingSearchWidget() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="absolute z-50 top-full mt-4 left-0 md:left-auto md:right-0 bg-[#1A1A1A] border border-white/10 p-6 rounded-3xl shadow-2xl w-80 md:w-96"
+                className="absolute z-50 top-full mt-4 left-0 md:left-auto md:right-0 bg-[#1A1A1A] border border-white/10 p-4 sm:p-6 rounded-3xl shadow-2xl w-[calc(100vw-32px)] sm:w-80 md:w-96"
               >
                 <div className="flex items-center justify-between mb-6">
                   <button onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors">
