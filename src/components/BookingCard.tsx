@@ -5,12 +5,13 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 interface BookingCardProps {
+  roomId: string;
   roomName: string;
   price: string;
   capacity: number;
 }
 
-export default function BookingCard({ roomName, price, capacity }: BookingCardProps) {
+export default function BookingCard({ roomId, roomName, price, capacity }: BookingCardProps) {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests] = useState(1);
@@ -73,7 +74,7 @@ export default function BookingCard({ roomName, price, capacity }: BookingCardPr
       </div>
 
       <Link
-        href={`/booking?room=${encodeURIComponent(roomName)}`}
+        href={`/booking?roomId=${roomId}`}
         className="btn-gold w-full block text-center"
       >
         Забронировать

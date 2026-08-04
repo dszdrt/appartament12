@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function blockDateRange(formData: FormData) {
   const roomId = formData.get("roomId") as string;
@@ -53,6 +54,7 @@ export async function blockDateRange(formData: FormData) {
 
   revalidatePath("/admin/calendar");
   revalidatePath("/booking");
+  redirect("/admin/calendar?success=blocked");
 }
 
 export async function unblockDateRange(formData: FormData) {
@@ -81,4 +83,5 @@ export async function unblockDateRange(formData: FormData) {
 
   revalidatePath("/admin/calendar");
   revalidatePath("/booking");
+  redirect("/admin/calendar?success=unblocked");
 }

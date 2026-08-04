@@ -9,6 +9,7 @@ export default withAuth({
 export const config = {
   matcher: [
     "/admin",
-    "/admin/:path*",
+    "/admin/((?!login).*)",
+    "/api/admin/((?!seed).*)",
   ]
 };

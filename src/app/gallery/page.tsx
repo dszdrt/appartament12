@@ -2,7 +2,7 @@ import Navigation from '@/components/Navigation';
 import MasonryGallery from '@/components/MasonryGallery';
 import AnimatedSection from '@/components/AnimatedSection';
 import Footer from '@/components/Footer';
-import { getCommonImages, getAllRooms } from '@/lib/images';
+import { db } from '@/lib/db';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,17 +10,29 @@ export const metadata: Metadata = {
   description: 'Фотогалерея бутик-отеля Apartments12. Территория, интерьеры и атмосфера.',
 };
 
-export default function GalleryPage() {
-  const commonImages = getCommonImages();
-  const rooms = getAllRooms();
-  
-  // Combine common images with one image from each room for a richer gallery
+export default async function GalleryPage() {
+  // Get gallery images from DB
+  const galleryImages = await db.gallery.findMany({
+    orderBy: { order: 'asc' },
+  });
+
+  // Also get room images for a richer gallery
+  const rooms = await db.room.findMany({
+    where: { deletedAt: null, status: 'ACTIVE' },
+    orderBy: { order: 'asc' },
+    include: {
+      images: { orderBy: { order: 'asc' }, take: 2 },
+    },
+  });
+
   const allImages = [
-    ...commonImages,
-    ...rooms.flatMap(room => room.images.slice(0, 2).map(img => ({
-      ...img,
-      alt: `${room.nameRu} — Apartments12`,
-    }))),
+    ...galleryImages.map((img) => ({ src: img.url, alt: 'Apartments12' })),
+    ...rooms.flatMap((room) =>
+      room.images.map((img) => ({
+        src: img.url,
+        alt: `${room.title} — Apartments12`,
+      }))
+    ),
   ];
 
   return (
@@ -52,7 +64,13 @@ export default function GalleryPage() {
       {/* Gallery */}
       <section className="px-6 pb-20">
         <div className="max-w-7xl mx-auto">
-          <MasonryGallery images={allImages} />
+          {allImages.length > 0 ? (
+            <MasonryGallery images={allImages} />
+          ) : (
+            <p className="text-center text-warm-white/50 text-lg py-20">
+              Галерея пока пуста
+            </p>
+          )}
         </div>
       </section>
 

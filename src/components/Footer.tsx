@@ -1,9 +1,18 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
+import { db } from '@/lib/db';
 
-export default function Footer() {
+export default async function Footer() {
+  const settings = await db.siteSetting.findMany();
+  const config: Record<string, string> = {};
+  settings.forEach((s) => {
+    config[s.key] = s.value;
+  });
+
+  const phone = config.contactPhone || '+7 (999) 123-45-67';
+  const email = config.contactEmail || 'info@apartments12.ru';
+  const hotelName = config.hotelName || 'Apartments12';
+
   return (
     <footer className="bg-charcoal border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 py-20">
@@ -13,7 +22,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 mb-4">
               <Image
                 src="/images/logo.png"
-                alt="Apartments12"
+                alt={hotelName}
                 width={40}
                 height={40}
                 className="filter-gold opacity-80 object-contain"
@@ -52,8 +61,8 @@ export default function Footer() {
           <div>
             <h3 className="text-gold text-xs tracking-[0.2em] uppercase mb-6">Контакты</h3>
             <div className="space-y-3 text-warm-white/50 text-sm">
-              <p>+7 (999) 123-45-67</p>
-              <p>info@apartments12.ru</p>
+              <p>{phone}</p>
+              <p>{email}</p>
               <p>Ежедневно с 08:00 до 22:00</p>
             </div>
           </div>
@@ -63,7 +72,7 @@ export default function Footer() {
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-warm-white/20 text-xs tracking-wider">
-            © {new Date().getFullYear()} Apartments12. Все права защищены.
+            © {new Date().getFullYear()} {hotelName}. Все права защищены.
           </p>
           <p className="text-warm-white/20 text-xs tracking-wider">
             Designed with ♥

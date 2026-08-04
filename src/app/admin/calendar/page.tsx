@@ -3,14 +3,15 @@ import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import { blockDateRange, unblockDateRange } from "./actions";
 
-export default async function CalendarPage({ searchParams }: { searchParams: { roomId?: string } }) {
+export default async function CalendarPage({ searchParams }: { searchParams: Promise<{ roomId?: string, success?: string }> }) {
+  const resolvedParams = await searchParams;
   const rooms = await db.room.findMany({
     where: { deletedAt: null },
     orderBy: { order: 'asc' },
     select: { id: true, title: true }
   });
 
-  const selectedRoomId = searchParams.roomId || (rooms.length > 0 ? rooms[0].id : undefined);
+  const selectedRoomId = resolvedParams.roomId || (rooms.length > 0 ? rooms[0].id : undefined);
 
   let availabilities: any[] = [];
   if (selectedRoomId) {
@@ -34,6 +35,18 @@ export default async function CalendarPage({ searchParams }: { searchParams: { r
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-serif font-bold">Календарь доступности</h1>
       </div>
+
+      {resolvedParams.success === 'blocked' && (
+        <div className="mb-6 p-4 bg-green-500/20 border border-green-500/50 text-green-400 rounded-lg">
+          Даты успешно заблокированы.
+        </div>
+      )}
+      
+      {resolvedParams.success === 'unblocked' && (
+        <div className="mb-6 p-4 bg-green-500/20 border border-green-500/50 text-green-400 rounded-lg">
+          Даты успешно разблокированы.
+        </div>
+      )}
 
       <div className="flex gap-4 mb-8">
         <form className="flex items-center gap-4">

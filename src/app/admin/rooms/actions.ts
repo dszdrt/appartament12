@@ -66,7 +66,23 @@ export async function saveRoom(formData: FormData, roomId?: string) {
 export async function deleteRoom(id: string) {
   await db.room.update({
     where: { id },
-    data: { deletedAt: new Date() },
+    data: { 
+      deletedAt: new Date(),
+      status: 'INACTIVE',
+    },
   });
+  
+  // Clear future availability for the soft-deleted room
+  await db.roomAvailability.deleteMany({
+    where: {
+      roomId: id,
+      date: {
+        gte: new Date()
+      }
+    }
+  });
+
   revalidatePath("/admin/rooms");
+  revalidatePath("/admin/calendar");
+  revalidatePath("/booking");
 }

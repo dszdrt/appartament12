@@ -142,6 +142,7 @@ export default async function RoomPage({ params }: PageProps) {
           {/* Booking Sidebar */}
           <div className="lg:col-span-1">
             <BookingCard
+              roomId={room.id}
               roomName={room.title}
               price={`от ${room.price.toLocaleString("ru-RU")} ₽`}
               capacity={room.capacity}
