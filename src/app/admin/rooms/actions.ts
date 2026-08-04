@@ -2,9 +2,12 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function saveRoom(formData: FormData, roomId?: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
   const title = formData.get("title") as string;
   const slug = formData.get("slug") as string;
   const subtitle = formData.get("subtitle") as string;
@@ -64,6 +67,9 @@ export async function saveRoom(formData: FormData, roomId?: string) {
 }
 
 export async function deleteRoom(id: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   await db.room.update({
     where: { id },
     data: { 

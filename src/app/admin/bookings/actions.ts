@@ -2,8 +2,12 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function updateBookingStatus(bookingId: string, status: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
   const validStatuses = ["PENDING", "APPROVED", "REJECTED", "COMPLETED", "CANCELLED"];
   if (!validStatuses.includes(status)) {
     throw new Error("Invalid status");
@@ -73,6 +77,9 @@ export async function updateBookingStatus(bookingId: string, status: string) {
 }
 
 export async function deleteBooking(bookingId: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   const booking = await db.booking.findUnique({
     where: { id: bookingId },
   });

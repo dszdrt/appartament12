@@ -2,8 +2,12 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function addGalleryImage(url: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
   const maxOrder = await db.gallery.findFirst({
     orderBy: { order: 'desc' },
     select: { order: true }
@@ -21,6 +25,9 @@ export async function addGalleryImage(url: string) {
 }
 
 export async function removeGalleryImage(id: string) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   await db.gallery.delete({
     where: { id }
   });
@@ -30,6 +37,9 @@ export async function removeGalleryImage(id: string) {
 }
 
 export async function reorderGalleryImages(orderedIds: string[]) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   // Update order based on index
   for (let i = 0; i < orderedIds.length; i++) {
     await db.gallery.update({
