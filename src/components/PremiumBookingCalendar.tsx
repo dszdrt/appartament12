@@ -9,7 +9,7 @@ import { getCalendarDays, weekDays } from "@/lib/calendar-utils";
 
 export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string, title: string }[] }) {
   const [currentMonth, setCurrentMonth] = useState<Date>(startOfDay(new Date()));
-  const [selectedRoom, setSelectedRoom] = useState<string>("");
+  const [selectedRoom, setSelectedRoom] = useState<string>(rooms.length > 0 ? rooms[0].id : "");
   const [availability, setAvailability] = useState<Record<string, "available" | "booked" | "maintenance">>({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -65,7 +65,6 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
           onChange={(e) => setSelectedRoom(e.target.value)}
           className="bg-black/20 border border-white/10 text-warm-white px-4 py-2 rounded-xl text-sm focus:border-gold focus:outline-none transition-colors appearance-none cursor-pointer max-w-[200px]"
         >
-          <option value="" className="bg-[#1A1A1A]">Все номера</option>
           {rooms.map(room => (
             <option key={room.id} value={room.id} className="bg-[#1A1A1A]">{room.title}</option>
           ))}
