@@ -54,6 +54,9 @@ body {
 
 /* Luxury button styles */
 .btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(135deg, var(--color-gold), var(--color-gold-dark));
   color: var(--color-charcoal);
   font-weight: 500;
@@ -88,6 +91,9 @@ body {
 }
 
 .btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--color-gold);
   color: var(--color-gold);
   font-weight: 500;
