@@ -1,4 +1,3 @@
-import Navigation from '@/components/Navigation';
 import MasonryGallery from '@/components/MasonryGallery';
 import AnimatedSection from '@/components/AnimatedSection';
 import Footer from '@/components/Footer';
@@ -37,8 +36,6 @@ export default async function GalleryPage() {
 
   return (
     <main>
-      <Navigation />
-
       {/* Header */}
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-7xl mx-auto text-center">

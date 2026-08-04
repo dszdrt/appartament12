@@ -1,4 +1,3 @@
-import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import AnimatedSection from '@/components/AnimatedSection';
 import { db } from '@/lib/db';
@@ -13,8 +12,6 @@ export default async function BookingPage() {
 
   return (
     <main>
-      <Navigation />
-
       <section className="pt-32 pb-20 px-6 min-h-screen">
         <div className="max-w-3xl mx-auto">
           <AnimatedSection className="text-center mb-16">

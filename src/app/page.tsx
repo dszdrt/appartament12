@@ -1,4 +1,3 @@
-import Navigation from '@/components/Navigation';
 import HeroSlideshow from '@/components/HeroSlideshow';
 import RoomCard from '@/components/RoomCard';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -63,7 +62,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
 
   return (
     <main>
-      <Navigation />
       <HeroSlideshow images={commonImages.map(img => ({ src: img.url, alt: img.title || "Apartments12" }))} />
 
       {/* About Section */}

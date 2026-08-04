@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation';
-import Navigation from '@/components/Navigation';
 import RoomGallery from '@/components/RoomGallery';
 import BookingCard from '@/components/BookingCard';
 import AnimatedSection from '@/components/AnimatedSection';
@@ -46,8 +45,6 @@ export default async function RoomPage({ params }: PageProps) {
 
   return (
     <main>
-      <Navigation />
-
       {/* Hero */}
       <section className="pt-24 pb-8 px-6">
         <div className="max-w-7xl mx-auto">
