@@ -6,8 +6,9 @@ import { Loader2, Calendar as CalendarIcon } from "lucide-react";
 import Link from "next/link";
 import { format, isBefore, startOfDay, isSameDay, isSameMonth, addMonths, subMonths } from "date-fns";
 import { ru } from "date-fns/locale";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import { getCalendarDays, weekDays } from "@/lib/calendar-utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function BookingForm({ rooms }: { rooms: { id: string, title: string }[] }) {
   const [submitted, setSubmitted] = useState(false);
@@ -20,7 +21,10 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
     to: null
   });
 
+  const [guests, setGuests] = useState(1);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isRoomsOpen, setIsRoomsOpen] = useState(false);
+  const [isGuestsOpen, setIsGuestsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(startOfDay(new Date()));
 
   useEffect(() => {
@@ -139,28 +143,70 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
 
       <div className="line-gold my-8" />
 
-      <div>
+      <div className="relative z-40">
         <label className="text-warm-white/40 text-xs tracking-[0.15em] uppercase block mb-2">Номер</label>
-        <select
-          name="roomId"
-          required
-          value={selectedRoom}
-          onChange={(e) => setSelectedRoom(e.target.value)}
-          className="w-full bg-charcoal-light border border-white/10 text-warm-white px-4 py-3 text-sm focus:border-gold focus:outline-none transition-colors appearance-none"
+        <input type="hidden" name="roomId" value={selectedRoom} />
+        <button
+          type="button"
+          onClick={() => {
+            setIsRoomsOpen(!isRoomsOpen);
+            setIsCalendarOpen(false);
+            setIsGuestsOpen(false);
+          }}
+          className="w-full bg-charcoal-light border border-white/10 text-left text-warm-white px-4 py-3 text-sm focus:border-gold focus:outline-none transition-colors flex justify-between items-center"
         >
-          <option value="">Выберите номер</option>
-          {rooms.map((room) => (
-            <option key={room.id} value={room.id}>{room.title}</option>
-          ))}
-        </select>
+          <span>{selectedRoom ? rooms.find(r => r.id === selectedRoom)?.title : "Выберите номер"}</span>
+          <ChevronDown className="w-4 h-4 text-warm-white/50" />
+        </button>
+
+        <AnimatePresence>
+          {isRoomsOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="absolute top-full mt-2 left-0 w-full bg-[#1A1A1A] border border-white/10 p-2 rounded-xl shadow-2xl z-50 overflow-hidden"
+            >
+              <style>{`
+                .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 10px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(201,169,110,0.6); }
+              `}</style>
+              <div className="max-h-60 overflow-y-auto custom-scrollbar flex flex-col gap-1 pr-1">
+                {rooms.map((room) => (
+                  <button
+                    key={room.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedRoom(room.id);
+                      setIsRoomsOpen(false);
+                    }}
+                    className={`
+                      w-full text-left px-4 py-3 rounded-lg text-sm transition-colors
+                      ${selectedRoom === room.id ? 'bg-gold/20 text-gold font-medium' : 'text-warm-white hover:bg-white/5'}
+                    `}
+                  >
+                    {room.title}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-        <div className="md:col-span-1">
+        <div className="md:col-span-1 relative z-30">
           <label className="text-warm-white/40 text-xs tracking-[0.15em] uppercase block mb-2">Даты проживания</label>
           <button
             type="button"
-            onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+            onClick={() => {
+              setIsCalendarOpen(!isCalendarOpen);
+              setIsRoomsOpen(false);
+              setIsGuestsOpen(false);
+            }}
             disabled={!selectedRoom}
             className="w-full bg-charcoal-light border border-white/10 text-left text-warm-white px-4 py-3 text-sm focus:border-gold focus:outline-none transition-colors flex items-center justify-between disabled:opacity-50"
           >
@@ -241,14 +287,52 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
           )}
         </div>
         
-        <div>
+        <div className="relative z-30">
           <label className="text-warm-white/40 text-xs tracking-[0.15em] uppercase block mb-2">Гости</label>
-          <select name="guests" required className="w-full bg-charcoal-light border border-white/10 text-warm-white px-4 py-3 text-sm focus:border-gold focus:outline-none transition-colors appearance-none">
-            <option value="1">1 гость</option>
-            <option value="2">2 гостя</option>
-            <option value="3">3 гостя</option>
-            <option value="4">4 гостя</option>
-          </select>
+          <input type="hidden" name="guests" value={guests} />
+          <button
+            type="button"
+            onClick={() => {
+              setIsGuestsOpen(!isGuestsOpen);
+              setIsCalendarOpen(false);
+              setIsRoomsOpen(false);
+            }}
+            className="w-full bg-charcoal-light border border-white/10 text-left text-warm-white px-4 py-3 text-sm focus:border-gold focus:outline-none transition-colors flex justify-between items-center"
+          >
+            <span>{guests} {guests === 1 ? 'гость' : guests < 5 ? 'гостя' : 'гостей'}</span>
+            <ChevronDown className="w-4 h-4 text-warm-white/50" />
+          </button>
+
+          <AnimatePresence>
+            {isGuestsOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
+                className="absolute top-full mt-2 left-0 w-full bg-[#1A1A1A] border border-white/10 p-2 rounded-xl shadow-2xl z-50 overflow-hidden"
+              >
+                <div className="max-h-48 overflow-y-auto custom-scrollbar flex flex-col gap-1 pr-1">
+                  {[1, 2, 3, 4, 5, 6].map(n => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => {
+                        setGuests(n);
+                        setIsGuestsOpen(false);
+                      }}
+                      className={`
+                        w-full text-left px-4 py-3 rounded-lg text-sm transition-colors
+                        ${guests === n ? 'bg-gold/20 text-gold font-medium' : 'text-warm-white hover:bg-white/5'}
+                      `}
+                    >
+                      {n} {n === 1 ? 'гость' : n < 5 ? 'гостя' : 'гостей'}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
