@@ -22,23 +22,6 @@ export default function Navigation() {
     { href: '/booking', label: 'Бронирование' },
   ];
 
-  const menuVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: {
-        when: "beforeChildren",
-        staggerChildren: 0.1
-      }
-    },
-    exit: { opacity: 0 }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   return (
     <>
       <motion.header
@@ -107,43 +90,34 @@ export default function Navigation() {
       </motion.header>
 
       {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            variants={menuVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="fixed inset-0 z-[100] bg-charcoal/95 backdrop-blur-xl flex items-center justify-center pointer-events-auto"
-          >
-            <nav className="flex flex-col items-center gap-8">
-              {navLinks.map((link) => (
-                <motion.div
-                  key={link.href}
-                  variants={itemVariants}
-                >
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="font-serif text-3xl text-warm-white hover:text-gold transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.div variants={itemVariants}>
-                <Link
-                  href="/booking"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="btn-gold mt-4"
-                >
-                  Забронировать
-                </Link>
-              </motion.div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div 
+        className={`fixed inset-0 z-[100] bg-charcoal/95 backdrop-blur-xl flex items-center justify-center transition-all duration-300 ${
+          isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        <nav className={`flex flex-col items-center gap-8 transition-transform duration-500 delay-100 ${isMobileMenuOpen ? 'translate-y-0' : 'translate-y-10'}`}>
+          {navLinks.map((link) => (
+            <div key={link.href}>
+              <Link
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="font-serif text-3xl text-warm-white hover:text-gold transition-colors block py-2"
+              >
+                {link.label}
+              </Link>
+            </div>
+          ))}
+          <div className="pt-4">
+            <Link
+              href="/booking"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="btn-gold"
+            >
+              Забронировать
+            </Link>
+          </div>
+        </nav>
+      </div>
     </>
   );
 }
