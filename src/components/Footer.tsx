@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { db } from '@/lib/db';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle, MessageSquare } from 'lucide-react';
 
 export default async function Footer() {
   const settings = await db.siteSetting.findMany();
@@ -14,6 +14,7 @@ export default async function Footer() {
   const email = config.contactEmail || 'info@apartments12.ru';
   const address = config.contactAddress || 'Краснодарский край, г. Сочи, ул. Ленина, 221/6';
   const hotelName = config.hotelName || 'Apartments12';
+  const maxUrl = config.maxUrl || 'https://max.ru';
 
   // Format phone for tel: link
   const phoneClean = phone.replace(/[^0-9+]/g, '');
@@ -97,6 +98,15 @@ export default async function Footer() {
               </a>
 
               <div className="pt-2 flex flex-col gap-2.5">
+                <a
+                  href={maxUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gold/20 hover:bg-gold/30 text-gold border border-gold/30 rounded-xl px-4 py-2.5 text-xs font-medium flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(201,169,110,0.15)]"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Написать в MAX</span>
+                </a>
                 <a
                   href={`https://wa.me/${phoneClean.replace('+', '')}`}
                   target="_blank"
