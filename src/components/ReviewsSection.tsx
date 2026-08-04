@@ -21,7 +21,8 @@ export default function ReviewsSection({ reviews }: { reviews: ReviewItem[] }) {
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
 
-  const yandexReviewsUrl = "https://yandex.ru/maps/?text=Apartments+12+Сочи+Ленина+221/6";
+  const yandexReviewsUrl = "https://yandex.ru/maps/org/apartamenty_12/24464261805/reviews/";
+  const travelUrl = "https://travel.yandex.ru/hotels/sochi/apartamenty-12/";
 
   const nextSlide = useCallback(() => {
     if (reviews.length === 0) return;
@@ -63,9 +64,7 @@ export default function ReviewsSection({ reviews }: { reviews: ReviewItem[] }) {
   }
 
   const currentReview = reviews[currentIndex];
-  const averageRating = (
-    reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
-  ).toFixed(1);
+  const displayRating = "4.7";
 
   return (
     <section id="reviews" className="py-24 px-6 relative overflow-hidden bg-charcoal">
@@ -86,7 +85,7 @@ export default function ReviewsSection({ reviews }: { reviews: ReviewItem[] }) {
           {/* Rating Badge */}
           <div className="inline-flex flex-col sm:flex-row items-center gap-4 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 backdrop-blur-md">
             <div className="flex items-center gap-2">
-              <span className="font-serif text-3xl font-bold text-gold">{averageRating}</span>
+              <span className="font-serif text-3xl font-bold text-gold">{displayRating}</span>
               <div className="flex text-gold">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-gold text-gold" />
@@ -95,7 +94,7 @@ export default function ReviewsSection({ reviews }: { reviews: ReviewItem[] }) {
             </div>
             <div className="hidden sm:block w-[1px] h-8 bg-white/10" />
             <div className="text-warm-white/70 text-sm font-light text-center sm:text-left">
-              <span className="text-warm-white font-medium">{reviews.length} отзывов</span> из проверенных источников
+              <span className="text-warm-white font-medium">Рейтинг 4.7</span> на Яндекс.Путешествиях и Картах
             </div>
           </div>
         </AnimatedSection>
