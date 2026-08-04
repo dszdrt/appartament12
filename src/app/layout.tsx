@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   },
   verification: {
     yandex: "bf9304b5ac6acc55",
+    google: "googleba2d3a0bb8c5148c",
   },
 };
 
