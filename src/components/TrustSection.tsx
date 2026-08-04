@@ -77,35 +77,33 @@ export default function TrustSection() {
           </p>
         </AnimatedSection>
 
-        {/* Feature Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6 md:gap-8">
-          {features.map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: Math.min(idx * 0.04, 0.2) }}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                className="glass-light p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-white/5 hover:border-gold/30 transition-all duration-300 group flex flex-col justify-between"
-              >
-                <div>
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl sm:rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center mb-3 sm:mb-6 text-gold group-hover:scale-105 group-hover:bg-gold group-hover:text-charcoal transition-all duration-300">
-                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+        {/* Feature Grid with single smooth reveal */}
+        <AnimatedSection delay={0.1}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6 md:gap-8">
+            {features.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  key={idx}
+                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                  className="glass-light p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-white/5 hover:border-gold/30 transition-all duration-300 group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl sm:rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center mb-3 sm:mb-6 text-gold group-hover:scale-105 group-hover:bg-gold group-hover:text-charcoal transition-all duration-300">
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" />
+                    </div>
+                    <h3 className="font-sans text-base sm:text-lg md:text-xl text-warm-white font-bold mb-1.5 sm:mb-3 group-hover:text-gold transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-warm-white/50 text-xs sm:text-sm leading-relaxed font-light">
+                      {item.description}
+                    </p>
                   </div>
-                  <h3 className="font-sans text-base sm:text-lg md:text-xl text-warm-white font-bold mb-1.5 sm:mb-3 group-hover:text-gold transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-warm-white/50 text-xs sm:text-sm leading-relaxed font-light">
-                    {item.description}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </AnimatedSection>
       </div>
     </section>
   );

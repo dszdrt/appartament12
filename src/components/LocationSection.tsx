@@ -137,41 +137,37 @@ export default function LocationSection() {
                 <span>Инфраструктура рядом</span>
                 <span className="h-[1px] flex-1 bg-gold/20"></span>
               </h3>
-            </AnimatedSection>
 
-            <div className="space-y-2.5 sm:space-y-3">
-              {nearbyPlaces.map((place, idx) => {
-                const Icon = place.icon;
-                return (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, x: 15 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: Math.min(idx * 0.04, 0.2) }}
-                    whileHover={{ x: 3 }}
-                    className="glass-light p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-white/5 hover:border-gold/30 transition-all duration-300 flex items-start gap-3 sm:gap-4 group"
-                  >
-                    <div className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gold/10 text-gold border border-gold/20 group-hover:bg-gold group-hover:text-charcoal transition-all duration-300 shrink-0">
-                      <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-0.5">
-                        <h4 className="font-sans text-xs sm:text-base text-warm-white font-semibold group-hover:text-gold transition-colors truncate">
-                          {place.title}
-                        </h4>
-                        <span className="text-[10px] sm:text-xs text-gold font-medium bg-gold/10 px-2 py-0.5 rounded-full border border-gold/20 shrink-0">
-                          {place.time}
-                        </span>
+              <div className="space-y-2.5 sm:space-y-3">
+                {nearbyPlaces.map((place, idx) => {
+                  const Icon = place.icon;
+                  return (
+                    <motion.div
+                      key={idx}
+                      whileHover={{ x: 3 }}
+                      className="glass-light p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border border-white/5 hover:border-gold/30 transition-all duration-300 flex items-start gap-3 sm:gap-4 group"
+                    >
+                      <div className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gold/10 text-gold border border-gold/20 group-hover:bg-gold group-hover:text-charcoal transition-all duration-300 shrink-0">
+                        <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                       </div>
-                      <p className="text-warm-white/50 text-[11px] sm:text-xs font-light leading-relaxed">
-                        {place.desc}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 mb-0.5">
+                          <h4 className="font-sans text-xs sm:text-base text-warm-white font-semibold group-hover:text-gold transition-colors truncate">
+                            {place.title}
+                          </h4>
+                          <span className="text-[10px] sm:text-xs text-gold font-medium bg-gold/10 px-2 py-0.5 rounded-full border border-gold/20 shrink-0">
+                            {place.time}
+                          </span>
+                        </div>
+                        <p className="text-warm-white/50 text-[11px] sm:text-xs font-light leading-relaxed">
+                          {place.desc}
+                        </p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </AnimatedSection>
           </div>
         </div>
       </div>
