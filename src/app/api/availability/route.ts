@@ -36,7 +36,7 @@ export async function GET(request: Request) {
     },
     select: {
       date: true,
-      reason: true, // we might store 'MAINTENANCE' in the future, currently we just look at counts
+      status: true,
     }
   });
 
@@ -48,7 +48,7 @@ export async function GET(request: Request) {
     // Standardize date to YYYY-MM-DD
     const dateStr = a.date.toISOString().split('T')[0];
     countsByDate[dateStr] = (countsByDate[dateStr] || 0) + 1;
-    if (a.reason?.toLowerCase().includes('maintenance') || a.reason?.toLowerCase().includes('ремонт')) {
+    if (a.status === 'MAINTENANCE') {
       hasMaintenance[dateStr] = true;
     }
   });
