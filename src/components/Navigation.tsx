@@ -22,6 +22,23 @@ export default function Navigation() {
     { href: '/booking', label: 'Бронирование' },
   ];
 
+  const menuVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: {
+        when: "beforeChildren",
+        staggerChildren: 0.1
+      }
+    },
+    exit: { opacity: 0 }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
     <>
       <motion.header
@@ -93,19 +110,17 @@ export default function Navigation() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            variants={menuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
             className="fixed inset-0 z-[100] bg-charcoal/95 backdrop-blur-xl flex items-center justify-center pointer-events-auto"
           >
             <nav className="flex flex-col items-center gap-8">
-              {navLinks.map((link, i) => (
+              {navLinks.map((link) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.1 }}
+                  variants={itemVariants}
                 >
                   <Link
                     href={link.href}
@@ -116,11 +131,7 @@ export default function Navigation() {
                   </Link>
                 </motion.div>
               ))}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
+              <motion.div variants={itemVariants}>
                 <Link
                   href="/booking"
                   onClick={() => setIsMobileMenuOpen(false)}
