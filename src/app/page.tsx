@@ -157,7 +157,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           </AnimatedSection>
           
           <AnimatedSection delay={0.2}>
-            <PremiumBookingCalendar />
+            <PremiumBookingCalendar rooms={rooms.map(r => ({ id: r.id, title: r.title }))} />
           </AnimatedSection>
         </div>
       </section>

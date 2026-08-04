@@ -5,6 +5,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const startParam = searchParams.get("start");
   const endParam = searchParams.get("end");
+  const roomIdParam = searchParams.get("roomId");
 
   if (!startParam || !endParam) {
     return NextResponse.json({ error: "Missing start or end date" }, { status: 400 });
@@ -17,10 +18,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Invalid date format" }, { status: 400 });
   }
 
-  // Get total active rooms
-  const totalRooms = await db.room.count({
-    where: { deletedAt: null, status: 'ACTIVE' }
-  });
+  // Get total active rooms (if checking all) or check specific room
+  const totalRooms = roomIdParam 
+    ? 1 
+    : await db.room.count({ where: { deletedAt: null, status: 'ACTIVE' } });
 
   if (totalRooms === 0) {
     return NextResponse.json({ dates: {} });
@@ -29,6 +30,7 @@ export async function GET(request: Request) {
   // Get all availabilities in the range
   const availabilities = await db.roomAvailability.findMany({
     where: {
+      ...(roomIdParam ? { roomId: roomIdParam } : {}),
       date: {
         gte: startDate,
         lte: endDate,
