@@ -67,7 +67,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <HeroSlideshow images={commonImages.map(img => ({ src: img.url, alt: img.title || "Apartments12" }))} />
 
       {/* About Section */}
-      <section className="py-32 px-6">
+      <section className="pt-24 pb-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <AnimatedSection>
             <p className="text-gold tracking-[0.3em] uppercase text-sm mb-6">Добро пожаловать</p>
@@ -89,7 +89,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       </section>
 
       {/* Rooms Section */}
-      <section id="rooms" className="py-20 px-6">
+      <section id="rooms" className="pt-8 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           <AnimatedSection className="text-center mb-16">
             <p className="text-gold tracking-[0.3em] uppercase text-sm mb-4">Коллекция</p>
