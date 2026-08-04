@@ -58,9 +58,9 @@ export async function saveRoom(formData: FormData, roomId?: string) {
     });
   }
 
-  revalidatePath("/");
-  revalidatePath("/rooms");
-  revalidatePath("/admin/rooms");
+  revalidatePath("/", "layout");
+  revalidatePath("/rooms", "layout");
+  revalidatePath("/admin/rooms", "layout");
 }
 
 export async function deleteRoom(id: string) {

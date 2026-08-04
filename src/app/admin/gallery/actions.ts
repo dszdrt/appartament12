@@ -17,6 +17,7 @@ export async function addGalleryImage(url: string) {
   });
   revalidatePath("/admin/gallery");
   revalidatePath("/");
+  revalidatePath("/gallery");
 }
 
 export async function removeGalleryImage(id: string) {
@@ -25,6 +26,7 @@ export async function removeGalleryImage(id: string) {
   });
   revalidatePath("/admin/gallery");
   revalidatePath("/");
+  revalidatePath("/gallery");
 }
 
 export async function reorderGalleryImages(orderedIds: string[]) {
@@ -37,4 +39,5 @@ export async function reorderGalleryImages(orderedIds: string[]) {
   }
   revalidatePath("/admin/gallery");
   revalidatePath("/");
+  revalidatePath("/gallery");
 }
