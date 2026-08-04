@@ -49,7 +49,7 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
   };
 
   return (
-    <div className="glass-light rounded-3xl p-8 shadow-2xl border border-white/10 relative overflow-hidden">
+    <div className="glass-light rounded-3xl p-4 sm:p-8 shadow-2xl border border-white/10 relative overflow-hidden">
       {isLoading && (
         <div className="absolute top-4 right-4 flex gap-1 z-20">
           <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-2 rounded-full bg-gold" />
@@ -58,8 +58,8 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
         </div>
       )}
 
-      <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-        <h3 className="font-serif text-2xl text-warm-white text-center md:text-left m-0">Доступность номеров</h3>
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 sm:mb-8 gap-4">
+        <h3 className="font-serif text-xl sm:text-2xl text-warm-white text-center md:text-left m-0">Доступность номеров</h3>
         <select
           value={selectedRoom}
           onChange={(e) => setSelectedRoom(e.target.value)}
@@ -73,12 +73,12 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
       </div>
       
       <div className="max-w-sm mx-auto relative">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
           <button 
             onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} 
-            className="p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors"
+            className="p-1 sm:p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
           <AnimatePresence mode="wait">
             <motion.span 
@@ -95,19 +95,19 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
             onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} 
             className="p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
 
-        <div className="grid grid-cols-7 gap-2 mb-4">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2 sm:mb-4">
           {weekDays.map(d => (
-            <div key={d} className="text-center text-xs text-warm-white/40 uppercase tracking-widest font-medium py-2">
+            <div key={d} className="text-center text-[10px] sm:text-xs text-warm-white/40 uppercase tracking-widest font-medium py-1 sm:py-2">
               {d}
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-y-4 gap-x-2 relative min-h-[350px]">
+        <div className="grid grid-cols-7 gap-y-2 sm:gap-y-4 gap-x-1 sm:gap-x-2 relative min-h-[260px] sm:min-h-[350px]">
           <AnimatePresence mode="wait">
             <motion.div 
               key={currentMonth.toISOString()}
@@ -115,7 +115,7 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.3 }}
-              className="col-span-7 grid grid-cols-7 gap-y-4 gap-x-2 absolute inset-0"
+              className="col-span-7 grid grid-cols-7 gap-y-2 sm:gap-y-4 gap-x-1 sm:gap-x-2 absolute inset-0"
             >
               {days.map((day, idx) => {
                 const status = getStatus(day);
@@ -125,7 +125,7 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
                   <div key={idx} className="relative flex flex-col justify-center items-center group">
                     <div 
                       className={`
-                        w-10 h-10 rounded-full flex items-center justify-center text-sm transition-all
+                        w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm transition-all
                         ${status === 'past' ? 'text-white/20' : 'cursor-default'}
                         ${status !== 'past' && isCurrentMonth ? 'text-warm-white' : ''}
                         ${status !== 'past' && !isCurrentMonth ? 'text-warm-white/40' : ''}
@@ -159,7 +159,7 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
         </div>
       </div>
 
-      <div className="mt-12 flex flex-wrap justify-center gap-x-6 gap-y-4 text-xs">
+      <div className="mt-8 sm:mt-12 flex flex-wrap justify-center gap-x-4 sm:gap-x-6 gap-y-3 sm:gap-y-4 text-[10px] sm:text-xs">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
           <span className="text-warm-white/70">Свободно</span>
