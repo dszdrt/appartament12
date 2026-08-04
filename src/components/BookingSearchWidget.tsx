@@ -16,6 +16,7 @@ export default function BookingSearchWidget() {
   });
   const [guests, setGuests] = useState(2);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isGuestsOpen, setIsGuestsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(startOfDay(new Date()));
 
   const handleSearch = () => {
@@ -67,7 +68,10 @@ export default function BookingSearchWidget() {
         <div className="w-full md:w-1/2 relative">
           <button
             type="button"
-            onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+            onClick={() => {
+              setIsCalendarOpen(!isCalendarOpen);
+              if (isGuestsOpen) setIsGuestsOpen(false);
+            }}
             className="w-full bg-black/20 hover:bg-black/30 transition-colors rounded-xl md:rounded-full px-6 py-4 flex items-center gap-4 text-left border border-white/5"
           >
             <CalendarIcon className="w-5 h-5 text-gold" />
@@ -151,19 +155,59 @@ export default function BookingSearchWidget() {
 
         {/* Guests */}
         <div className="w-full md:w-1/4 relative">
-          <div className="w-full bg-black/20 rounded-xl md:rounded-full px-6 py-4 flex items-center gap-4 border border-white/5">
+          <button
+            type="button"
+            onClick={() => {
+              setIsGuestsOpen(!isGuestsOpen);
+              if (isCalendarOpen) setIsCalendarOpen(false);
+            }}
+            className="w-full bg-black/20 hover:bg-black/30 transition-colors rounded-xl md:rounded-full px-6 py-4 flex items-center gap-4 text-left border border-white/5"
+          >
             <Users className="w-5 h-5 text-gold shrink-0" />
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col flex-1">
               <span className="text-xs text-warm-white/50 uppercase tracking-widest font-medium">Гости</span>
-              <select
-                value={guests}
-                onChange={(e) => setGuests(Number(e.target.value))}
-                className="bg-transparent text-warm-white text-sm focus:outline-none appearance-none cursor-pointer w-full"
-              >
-                {[1,2,3,4].map(n => <option key={n} value={n} className="bg-[#1A1A1A] text-white">{n} {n === 1 ? 'гость' : n < 5 ? 'гостя' : 'гостей'}</option>)}
-              </select>
+              <span className="text-warm-white text-sm">
+                {guests} {guests === 1 ? 'гость' : guests < 5 ? 'гостя' : 'гостей'}
+              </span>
             </div>
-          </div>
+          </button>
+
+          <AnimatePresence>
+            {isGuestsOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="absolute z-50 top-full mt-4 left-0 w-full bg-[#1A1A1A] border border-white/10 p-2 rounded-2xl shadow-2xl overflow-hidden"
+              >
+                <style>{`
+                  .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+                  .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
+                  .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 10px; }
+                  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(201,169,110,0.6); }
+                `}</style>
+                <div className="max-h-48 overflow-y-auto custom-scrollbar flex flex-col gap-1 pr-1">
+                  {[1, 2, 3, 4, 5, 6].map(n => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => {
+                        setGuests(n);
+                        setIsGuestsOpen(false);
+                      }}
+                      className={`
+                        w-full text-left px-4 py-3 rounded-xl text-sm transition-colors
+                        ${guests === n ? 'bg-gold/20 text-gold font-medium' : 'text-warm-white hover:bg-white/5'}
+                      `}
+                    >
+                      {n} {n === 1 ? 'гость' : n < 5 ? 'гостя' : 'гостей'}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Search Button */}
