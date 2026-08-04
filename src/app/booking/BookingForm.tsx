@@ -4,10 +4,10 @@ import { useState, useEffect } from "react";
 import { submitBooking } from "./actions";
 import { Loader2, Calendar as CalendarIcon } from "lucide-react";
 import Link from "next/link";
-import { DayPicker } from "react-day-picker";
-import { format } from "date-fns";
+import { format, isBefore, startOfDay, isSameDay, isSameMonth, addMonths, subMonths } from "date-fns";
 import { ru } from "date-fns/locale";
-import "react-day-picker/dist/style.css";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getCalendarDays, weekDays } from "@/lib/calendar-utils";
 
 export default function BookingForm({ rooms }: { rooms: { id: string, title: string }[] }) {
   const [submitted, setSubmitted] = useState(false);
@@ -15,17 +15,18 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
   const [selectedRoom, setSelectedRoom] = useState("");
   const [blockedDates, setBlockedDates] = useState<Date[]>([]);
   
-  const [dateRange, setDateRange] = useState<{from: Date | undefined, to: Date | undefined}>({
-    from: undefined,
-    to: undefined
+  const [dateRange, setDateRange] = useState<{from: Date | null, to: Date | null}>({
+    from: null,
+    to: null
   });
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(startOfDay(new Date()));
 
   useEffect(() => {
     if (selectedRoom) {
       setBlockedDates([]);
-      setDateRange({ from: undefined, to: undefined });
+      setDateRange({ from: null, to: null });
       fetch(`/api/rooms/${selectedRoom}/availability`)
         .then(res => res.json())
         .then(data => {
@@ -35,6 +36,47 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
         });
     }
   }, [selectedRoom]);
+
+  const isDayBlocked = (day: Date) => {
+    return blockedDates.some(blocked => isSameDay(blocked, day));
+  };
+
+  const handleDayClick = (day: Date) => {
+    if (isBefore(day, startOfDay(new Date())) || isDayBlocked(day)) return;
+
+    if (!dateRange.from || (dateRange.from && dateRange.to)) {
+      setDateRange({ from: day, to: null });
+    } else {
+      if (isBefore(day, dateRange.from)) {
+        setDateRange({ from: day, to: dateRange.from });
+      } else {
+        // Ensure no blocked dates in range
+        const hasBlocked = blockedDates.some(b => b > dateRange.from! && b < day);
+        if (hasBlocked) {
+          alert("Выбранный период включает недоступные даты.");
+          setDateRange({ from: day, to: null });
+          return;
+        }
+        setDateRange({ from: dateRange.from, to: day });
+        setIsCalendarOpen(false);
+      }
+    }
+  };
+
+  const isSelected = (day: Date) => {
+    if (dateRange.from && isSameDay(day, dateRange.from)) return true;
+    if (dateRange.to && isSameDay(day, dateRange.to)) return true;
+    return false;
+  };
+
+  const isInRange = (day: Date) => {
+    if (dateRange.from && dateRange.to) {
+      return day > dateRange.from && day < dateRange.to;
+    }
+    return false;
+  };
+
+  const days = getCalendarDays(currentMonth);
 
   const handleSubmit = async (formData: FormData) => {
     if (!dateRange.from || !dateRange.to) {
@@ -131,28 +173,67 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
           </button>
           
           {isCalendarOpen && (
-            <div className="absolute z-50 top-full mt-2 left-0 bg-charcoal border border-white/10 p-4 rounded-xl shadow-xl">
-              <style>{`
-                .rdp { --rdp-cell-size: 40px; --rdp-accent-color: #C9A96E; --rdp-background-color: rgba(201, 169, 110, 0.2); }
-                .rdp-day_selected { background-color: var(--rdp-accent-color); color: #1a1a1a; font-weight: bold; }
-                .rdp-day_disabled { opacity: 0.2; text-decoration: line-through; }
-              `}</style>
-              <DayPicker
-                mode="range"
-                selected={dateRange as any}
-                onSelect={(range: any) => {
-                  setDateRange(range || {from: undefined, to: undefined});
-                }}
-                disabled={[
-                  { before: new Date() },
-                  ...blockedDates
-                ]}
-                locale={ru}
-              />
+            <div className="absolute z-50 top-full mt-2 left-0 bg-[#1A1A1A] border border-white/10 p-4 rounded-2xl shadow-2xl w-80 md:w-96">
+              <div className="flex items-center justify-between mb-4">
+                <button type="button" onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} className="p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors">
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <span className="font-serif text-lg text-warm-white capitalize">
+                  {format(currentMonth, 'LLLL yyyy', { locale: ru })}
+                </span>
+                <button type="button" onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} className="p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors">
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-7 gap-1 mb-2">
+                {weekDays.map(d => (
+                  <div key={d} className="text-center text-xs text-warm-white/40 font-medium py-1">
+                    {d}
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-y-1">
+                {days.map((day, idx) => {
+                  const disabled = isBefore(day, startOfDay(new Date())) || isDayBlocked(day);
+                  const selected = isSelected(day);
+                  const range = isInRange(day);
+                  const isCurrentMonth = isSameMonth(day, currentMonth);
+
+                  return (
+                    <div key={idx} className="relative flex justify-center items-center h-10">
+                      {range && (
+                        <div className="absolute inset-0 bg-gold/20" />
+                      )}
+                      {selected && dateRange.from && dateRange.to && (
+                        <div className={`absolute inset-y-0 w-1/2 bg-gold/20 ${isSameDay(day, dateRange.from) ? 'right-0' : 'left-0'}`} />
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleDayClick(day)}
+                        disabled={disabled}
+                        className={`
+                          relative z-10 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-xs transition-all
+                          ${disabled ? 'text-white/20 cursor-not-allowed line-through decoration-red-500/50' : 'cursor-pointer'}
+                          ${!disabled && !selected && !range ? 'hover:bg-gold/20' : ''}
+                          ${selected ? 'bg-gold text-charcoal font-bold shadow-lg' : ''}
+                          ${range && !selected ? 'text-gold' : ''}
+                          ${!selected && !range && !disabled && isCurrentMonth ? 'text-warm-white' : ''}
+                          ${!selected && !range && !disabled && !isCurrentMonth ? 'text-warm-white/40' : ''}
+                        `}
+                      >
+                        {format(day, 'd')}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+
               <button 
                 type="button"
                 onClick={() => setIsCalendarOpen(false)}
-                className="w-full mt-4 text-sm text-gold hover:text-gold-light"
+                className="w-full mt-4 text-sm text-gold hover:text-gold-light py-2"
               >
                 Закрыть
               </button>
