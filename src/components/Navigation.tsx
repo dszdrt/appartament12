@@ -28,7 +28,7 @@ export default function Navigation() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-500 ${
           isScrolled
             ? 'glass py-3'
             : 'bg-transparent py-6'
@@ -68,10 +68,9 @@ export default function Navigation() {
             </Link>
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative z-50 w-8 h-8 flex flex-col justify-center items-center gap-1.5"
+            className="md:hidden relative z-[120] w-12 h-12 flex flex-col justify-center items-end gap-1.5 cursor-pointer"
             aria-label="Меню"
           >
             <motion.span
@@ -98,7 +97,7 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-charcoal/95 backdrop-blur-xl flex items-center justify-center"
+            className="fixed inset-0 z-[100] bg-charcoal/95 backdrop-blur-xl flex items-center justify-center pointer-events-auto"
           >
             <nav className="flex flex-col items-center gap-8">
               {navLinks.map((link, i) => (
