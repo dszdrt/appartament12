@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     description: "Уникальный бутик-отель с 10 тематическими апартаментами",
     type: "website",
   },
+  verification: {
+    yandex: "bf9304b5ac6acc55",
+  },
 };
 
 export default function RootLayout({
