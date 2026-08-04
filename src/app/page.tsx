@@ -130,7 +130,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       </section>
 
       {/* Interactive Global Calendar Section */}
-      <section className="py-20 px-6 bg-charcoal-light/30 border-y border-white/5 relative overflow-hidden">
+      <section id="calendar" className="py-20 px-6 bg-charcoal-light/30 border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2" />
         <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

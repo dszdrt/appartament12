@@ -18,8 +18,8 @@ export default function Navigation() {
   const navLinks = [
     { href: '/', label: 'Главная' },
     { href: '/#rooms', label: 'Номера' },
+    { href: '/#calendar', label: 'Занятость' },
     { href: '/gallery', label: 'Галерея' },
-    { href: '/booking', label: 'Бронирование' },
   ];
 
   return (
