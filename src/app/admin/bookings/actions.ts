@@ -67,7 +67,9 @@ export async function updateBookingStatus(bookingId: string, status: string) {
 
   revalidatePath("/admin/bookings");
   revalidatePath("/admin/calendar");
+  revalidatePath("/admin");
   revalidatePath("/booking");
+  revalidatePath("/", "layout");
 }
 
 export async function deleteBooking(bookingId: string) {
@@ -97,6 +99,9 @@ export async function deleteBooking(bookingId: string) {
 
   revalidatePath("/admin/bookings");
   revalidatePath("/admin/calendar");
+  revalidatePath("/admin");
+  revalidatePath("/booking");
+  revalidatePath("/", "layout");
 }
 
 // Helper: generate array of dates from start to end (exclusive of end = checkout day)

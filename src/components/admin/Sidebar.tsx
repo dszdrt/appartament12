@@ -16,6 +16,7 @@ import {
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { href: "/admin", label: "Дашборд", icon: LayoutDashboard },
@@ -82,25 +83,22 @@ export default function Sidebar() {
       </div>
 
       {/* Overlay for mobile */}
-      {isOpen && (
-        <div
-          className="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
 
-      {/* Sidebar */}
-      <aside
-        className={`
-          fixed lg:sticky top-0 left-0 z-40 h-screen
-          w-64 bg-[#111111] border-r border-white/5 flex flex-col
-          transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-          lg:translate-x-0
-        `}
-      >
+      {/* Sidebar Desktop */}
+      <aside className="hidden lg:flex fixed lg:sticky top-0 left-0 z-40 h-screen w-64 bg-[#111111] border-r border-white/5 flex-col">
         {/* Desktop logo */}
-        <div className="hidden lg:block p-6 border-b border-white/5">
+        <div className="p-6 border-b border-white/5">
           <Link href="/admin" className="flex items-center gap-3">
             <Image
               src="/images/logo.png"
@@ -114,9 +112,6 @@ export default function Sidebar() {
             </span>
           </Link>
         </div>
-
-        {/* Mobile spacer for the fixed header */}
-        <div className="lg:hidden h-14 flex-shrink-0" />
 
         <nav className="flex-1 py-6 px-4 space-y-2 overflow-y-auto">
           {navItems.map((item) => {
@@ -152,6 +147,53 @@ export default function Sidebar() {
           </button>
         </div>
       </aside>
+
+      {/* Sidebar Mobile */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.aside
+            initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ type: "tween", duration: 0.3 }}
+            className="lg:hidden fixed top-0 left-0 z-40 h-screen w-64 bg-[#111111] border-r border-white/5 flex flex-col pt-14"
+          >
+            <nav className="flex-1 py-6 px-4 space-y-2 overflow-y-auto">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive =
+                  pathname === item.href ||
+                  (pathname.startsWith(item.href) && item.href !== "/admin");
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                      isActive
+                        ? "bg-gold/10 text-gold"
+                        : "text-warm-white/70 hover:bg-white/5 hover:text-warm-white"
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span className="font-medium">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            <div className="p-4 border-t border-white/5">
+              <button
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-red-400 hover:bg-red-500/10 transition-colors"
+              >
+                <LogOut className="w-5 h-5" />
+                <span className="font-medium">Выйти</span>
+              </button>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
     </>
   );
 }
