@@ -76,6 +76,7 @@ reviews_data = [
 
 def main():
     conn = psycopg2.connect(db_url)
+    conn.autocommit = True
     cur = conn.cursor()
     
     print("Creating table Review if not exists...")
@@ -83,21 +84,24 @@ def main():
     
     print("Seeding reviews...")
     for rev in reviews_data:
-        cur.execute("""
-            INSERT INTO "Review" ("id", "authorName", "rating", "dateText", "text", "source", "isPinned", "isVisible", "order", "updatedAt")
-            VALUES (%s, %s, %s, %s, %s, %s, %s, true, %s, NOW())
-            ON CONFLICT ("id") DO UPDATE SET
-                "authorName" = EXCLUDED."authorName",
-                "rating" = EXCLUDED."rating",
-                "dateText" = EXCLUDED."dateText",
-                "text" = EXCLUDED."text",
-                "source" = EXCLUDED."source",
-                "isPinned" = EXCLUDED."isPinned",
-                "order" = EXCLUDED."order",
-                "updatedAt" = NOW();
-        """, (rev["id"], rev["authorName"], rev["rating"], rev["dateText"], rev["text"], rev["source"], rev["isPinned"], rev["order"]))
+        try:
+            cur.execute("""
+                INSERT INTO "Review" ("id", "authorName", "rating", "dateText", "text", "source", "isPinned", "isVisible", "order", "updatedAt")
+                VALUES (%s, %s, %s, %s, %s, %s, %s, true, %s, NOW())
+                ON CONFLICT ("id") DO UPDATE SET
+                    "authorName" = EXCLUDED."authorName",
+                    "rating" = EXCLUDED."rating",
+                    "dateText" = EXCLUDED."dateText",
+                    "text" = EXCLUDED."text",
+                    "source" = EXCLUDED."source",
+                    "isPinned" = EXCLUDED."isPinned",
+                    "order" = EXCLUDED."order",
+                    "updatedAt" = NOW();
+            """, (rev["id"], rev["authorName"], rev["rating"], rev["dateText"], rev["text"], rev["source"], rev["isPinned"], rev["order"]))
+            print(f"Inserted/updated {rev['id']}")
+        except Exception as e:
+            print(f"Error seeding {rev['id']}: {e}")
     
-    conn.commit()
     cur.close()
     conn.close()
     print("Successfully created table and seeded reviews!")
