@@ -18,7 +18,9 @@ export default function Navigation() {
   const navLinks = [
     { href: '/', label: 'Главная' },
     { href: '/#rooms', label: 'Номера' },
-    { href: '/#calendar', label: 'Занятость' },
+    { href: '/#trust', label: 'Преимущества' },
+    { href: '/#location', label: 'Расположение' },
+    { href: '/#reviews', label: 'Отзывы' },
     { href: '/gallery', label: 'Галерея' },
   ];
 

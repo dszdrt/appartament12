@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { db } from '@/lib/db';
 import PremiumBookingCalendar from '@/components/PremiumBookingCalendar';
 import BookingSearchWidget from '@/components/BookingSearchWidget';
+import TrustSection from '@/components/TrustSection';
+import LocationSection from '@/components/LocationSection';
+import ReviewsSection from '@/components/ReviewsSection';
 
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ start?: string, end?: string, guests?: string }> }) {
   const { start, end, guests } = await searchParams;
@@ -18,6 +21,15 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     where: { deletedAt: null, status: 'ACTIVE' },
     orderBy: { order: 'asc' },
     include: { images: { orderBy: { order: 'asc' } } }
+  });
+
+  const reviews = await db.review.findMany({
+    where: { isVisible: true },
+    orderBy: [
+      { isPinned: 'desc' },
+      { order: 'asc' },
+      { createdAt: 'desc' }
+    ]
   });
 
   // Determine unavailable rooms if dates are provided
@@ -86,6 +98,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
+      {/* Trust Section */}
+      <TrustSection />
+
       {/* Rooms Section */}
       <section id="rooms" className="pt-8 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
@@ -129,6 +144,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
+      {/* Location Section */}
+      <LocationSection />
+
       {/* Interactive Global Calendar Section */}
       <section id="calendar" className="py-20 px-6 bg-charcoal-light/30 border-y border-white/5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
@@ -159,6 +177,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Reviews Section */}
+      <ReviewsSection reviews={reviews} />
 
       {/* CTA Section */}
       <section className="py-32 px-6">

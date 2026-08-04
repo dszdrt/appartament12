@@ -12,6 +12,7 @@ import {
   CalendarDays,
   Menu,
   X,
+  Star,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -24,6 +25,7 @@ const navItems = [
   { href: "/admin/calendar", label: "Календарь", icon: CalendarDays },
   { href: "/admin/rooms", label: "Номера", icon: Bed },
   { href: "/admin/gallery", label: "Галерея", icon: ImageIcon },
+  { href: "/admin/reviews", label: "Отзывы", icon: Star },
   { href: "/admin/settings", label: "Настройки", icon: Settings },
 ];
 
