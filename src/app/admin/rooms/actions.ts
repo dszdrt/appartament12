@@ -61,7 +61,6 @@ export async function saveRoom(formData: FormData, roomId?: string) {
   revalidatePath("/");
   revalidatePath("/rooms");
   revalidatePath("/admin/rooms");
-  redirect("/admin/rooms");
 }
 
 export async function deleteRoom(id: string) {

@@ -4,22 +4,40 @@ import { useState } from "react";
 import SortableImageGallery from "./SortableImageGallery";
 import { saveRoom } from "@/app/admin/rooms/actions";
 
+import { useRouter } from "next/navigation";
+
 export default function RoomForm({ initialData }: { initialData?: any }) {
   const [images, setImages] = useState<string[]>(
     initialData?.images?.map((img: any) => img.url) || []
   );
   const [isPending, setIsPending] = useState(false);
+  const [message, setMessage] = useState('');
+  const router = useRouter();
 
   return (
-    <form action={async (formData) => {
-      setIsPending(true);
-      try {
-        images.forEach(url => formData.append("images[]", url));
-        await saveRoom(formData, initialData?.id);
-      } finally {
-        setIsPending(false);
-      }
-    }} className="space-y-8">
+    <div className="relative">
+      {message && (
+        <div className="mb-6 p-4 rounded-lg bg-green-500/20 text-green-300 border border-green-500/30 font-medium flex items-center gap-2">
+          {message}
+        </div>
+      )}
+      
+      <form action={async (formData) => {
+        setIsPending(true);
+        setMessage('');
+        try {
+          images.forEach(url => formData.append("images[]", url));
+          await saveRoom(formData, initialData?.id);
+          setMessage("✅ Информация о номере успешно обновлена!");
+          router.refresh();
+          
+          setTimeout(() => setMessage(''), 3000);
+        } catch (e) {
+          setMessage("❌ Ошибка сохранения");
+        } finally {
+          setIsPending(false);
+        }
+      }} className="space-y-8">
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
@@ -78,5 +96,6 @@ export default function RoomForm({ initialData }: { initialData?: any }) {
         {isPending ? "Сохранение..." : "Сохранить номер"}
       </button>
     </form>
+    </div>
   );
 }
