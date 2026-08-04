@@ -159,7 +159,7 @@ export default function PremiumBookingCalendar({ rooms }: { rooms: { id: string,
         </div>
       </div>
 
-      <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+      <div className="mt-12 flex flex-wrap justify-center gap-x-6 gap-y-4 text-xs">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
           <span className="text-warm-white/70">Свободно</span>
