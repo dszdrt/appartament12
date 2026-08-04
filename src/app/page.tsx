@@ -98,9 +98,6 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         </div>
       </section>
 
-      {/* Trust Section */}
-      <TrustSection />
-
       {/* Rooms Section */}
       <section id="rooms" className="pt-8 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
@@ -177,6 +174,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
           </AnimatedSection>
         </div>
       </section>
+
+      {/* Trust Section */}
+      <TrustSection />
 
       {/* Reviews Section */}
       <ReviewsSection reviews={reviews} />
