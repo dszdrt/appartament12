@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DayPicker } from "react-day-picker";
-import { format, startOfMonth, endOfMonth, addMonths } from "date-fns";
+import { format, startOfMonth, endOfMonth, addMonths, subMonths, isBefore, startOfDay, isSameMonth } from "date-fns";
 import { ru } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
-import "react-day-picker/dist/style.css";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getCalendarDays, weekDays } from "@/lib/calendar-utils";
 
 export default function PremiumBookingCalendar() {
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+  const [currentMonth, setCurrentMonth] = useState<Date>(startOfDay(new Date()));
   const [availability, setAvailability] = useState<Record<string, "available" | "booked" | "maintenance">>({});
   const [isLoading, setIsLoading] = useState(false);
 
@@ -17,7 +17,7 @@ export default function PremiumBookingCalendar() {
       setIsLoading(true);
       try {
         const start = startOfMonth(currentMonth);
-        const end = endOfMonth(addMonths(currentMonth, 1)); // Fetch 2 months to preload
+        const end = endOfMonth(addMonths(currentMonth, 1)); // Fetch 2 months
         
         const res = await fetch(`/api/availability?start=${start.toISOString()}&end=${end.toISOString()}`);
         if (!res.ok) throw new Error("Failed to fetch");
@@ -34,18 +34,12 @@ export default function PremiumBookingCalendar() {
     fetchAvailability();
   }, [currentMonth]);
 
-  const modifiers = {
-    booked: (date: Date) => availability[format(date, 'yyyy-MM-dd')] === "booked",
-    maintenance: (date: Date) => availability[format(date, 'yyyy-MM-dd')] === "maintenance",
-    available: (date: Date) => !availability[format(date, 'yyyy-MM-dd')] && date >= new Date(new Date().setHours(0,0,0,0)),
-    past: (date: Date) => date < new Date(new Date().setHours(0,0,0,0))
-  };
+  const days = getCalendarDays(currentMonth);
 
-  const modifiersStyles = {
-    booked: { color: "#ef4444", textDecoration: "line-through", opacity: 0.7 },
-    maintenance: { color: "#f97316", opacity: 0.8 },
-    available: { color: "#22c55e", fontWeight: "bold" },
-    past: { opacity: 0.3 }
+  const getStatus = (day: Date) => {
+    if (isBefore(day, startOfDay(new Date()))) return 'past';
+    const dateStr = format(day, 'yyyy-MM-dd');
+    return availability[dateStr] || 'available'; // Default to available if in future and no blocks
   };
 
   return (
@@ -60,41 +54,94 @@ export default function PremiumBookingCalendar() {
 
       <h3 className="font-serif text-2xl text-warm-white mb-6 text-center">Доступность номеров</h3>
       
-      <style>{`
-        .rdp { --rdp-cell-size: 45px; --rdp-accent-color: #C9A96E; --rdp-background-color: rgba(201, 169, 110, 0.1); margin: 0 auto; }
-        .rdp-day_selected, .rdp-day_selected:hover, .rdp-day_selected:focus { 
-          background-color: #C9A96E !important; 
-          color: #1a1a1a !important; 
-          font-weight: bold !important; 
-        }
-        .rdp-day:hover:not(.rdp-day_disabled) { background-color: rgba(201, 169, 110, 0.2); }
-        .rdp-nav_button { color: var(--color-gold); }
-        .rdp-nav_button:hover { background: rgba(201, 169, 110, 0.1); }
-        .rdp-caption_label { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--color-warm-white); }
-        .rdp-head_cell { font-weight: 400; color: rgba(250, 248, 245, 0.4); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; }
-      `}</style>
-      
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentMonth.toISOString()}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          <DayPicker
-            mode="single"
-            month={currentMonth}
-            onMonthChange={setCurrentMonth}
-            locale={ru}
-            modifiers={modifiers}
-            modifiersStyles={modifiersStyles}
-            disabled={[{ before: new Date() }]}
-          />
-        </motion.div>
-      </AnimatePresence>
+      <div className="max-w-sm mx-auto relative">
+        <div className="flex items-center justify-between mb-8">
+          <button 
+            onClick={() => setCurrentMonth(subMonths(currentMonth, 1))} 
+            className="p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          <AnimatePresence mode="wait">
+            <motion.span 
+              key={currentMonth.toISOString()}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="font-serif text-xl text-warm-white capitalize tracking-wide"
+            >
+              {format(currentMonth, 'LLLL yyyy', { locale: ru })}
+            </motion.span>
+          </AnimatePresence>
+          <button 
+            onClick={() => setCurrentMonth(addMonths(currentMonth, 1))} 
+            className="p-2 text-warm-white/70 hover:text-gold hover:bg-white/5 rounded-full transition-colors"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        </div>
 
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+        <div className="grid grid-cols-7 gap-2 mb-4">
+          {weekDays.map(d => (
+            <div key={d} className="text-center text-xs text-warm-white/40 uppercase tracking-widest font-medium py-2">
+              {d}
+            </div>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-7 gap-y-4 gap-x-2 relative min-h-[250px]">
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={currentMonth.toISOString()}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.3 }}
+              className="col-span-7 grid grid-cols-7 gap-y-4 gap-x-2 absolute inset-0"
+            >
+              {days.map((day, idx) => {
+                const status = getStatus(day);
+                const isCurrentMonth = isSameMonth(day, currentMonth);
+                
+                return (
+                  <div key={idx} className="relative flex flex-col justify-center items-center group">
+                    <div 
+                      className={`
+                        w-10 h-10 rounded-full flex items-center justify-center text-sm transition-all
+                        ${status === 'past' ? 'text-white/20' : 'cursor-default'}
+                        ${status !== 'past' && isCurrentMonth ? 'text-warm-white' : ''}
+                        ${status !== 'past' && !isCurrentMonth ? 'text-warm-white/40' : ''}
+                        ${status === 'booked' ? 'text-red-300 opacity-70 line-through decoration-red-500/50' : ''}
+                      `}
+                    >
+                      {format(day, 'd')}
+                    </div>
+                    {/* Status dot */}
+                    {status !== 'past' && (
+                      <div className={`absolute bottom-0 w-1.5 h-1.5 rounded-full mt-1 
+                        ${status === 'available' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : ''}
+                        ${status === 'booked' ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]' : ''}
+                        ${status === 'maintenance' ? 'bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]' : ''}
+                      `} />
+                    )}
+
+                    {/* Tooltip */}
+                    {status !== 'past' && (
+                      <div className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 w-max px-3 py-1.5 bg-black/80 backdrop-blur rounded-lg text-xs border border-white/10 shadow-xl">
+                        {status === 'available' && <span className="text-green-400">Свободно</span>}
+                        {status === 'booked' && <span className="text-red-400">Мест нет</span>}
+                        {status === 'maintenance' && <span className="text-orange-400">Частично недоступно</span>}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
           <span className="text-warm-white/70">Свободно</span>
