@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -14,6 +14,18 @@ export default function Navigation() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   const navLinks = [
     { href: '/', label: 'Главная' },
@@ -34,20 +46,20 @@ export default function Navigation() {
         className={`fixed top-0 left-0 right-0 z-[110] transition-all duration-500 ${
           isScrolled
             ? 'glass py-3'
-            : 'bg-transparent py-6'
+            : 'bg-transparent py-4 sm:py-6'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative z-50 flex items-center gap-3 group">
+          <Link href="/" className="relative z-50 flex items-center gap-2.5 sm:gap-3 group">
             <Image
               src="/images/logo.png"
               alt="Apartments12"
-              width={48}
-              height={48}
-              className="filter-gold opacity-90 group-hover:opacity-100 transition-all duration-300 object-contain"
+              width={40}
+              height={40}
+              className="filter-gold opacity-90 group-hover:opacity-100 transition-all duration-300 object-contain w-8 h-8 sm:w-12 sm:h-12"
             />
-            <span className="font-serif text-xl tracking-wider text-warm-white group-hover:text-gold transition-colors duration-300">
+            <span className="font-serif text-lg sm:text-xl tracking-wider text-warm-white group-hover:text-gold transition-colors duration-300">
               Apartments<span className="text-gold">12</span>
             </span>
           </Link>
@@ -71,9 +83,10 @@ export default function Navigation() {
             </Link>
           </nav>
 
+          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative z-[120] w-12 h-12 flex flex-col justify-center items-end gap-1.5 cursor-pointer"
+            className="md:hidden relative z-[120] w-10 h-10 flex flex-col justify-center items-end gap-1.5 cursor-pointer"
             aria-label="Меню"
           >
             <motion.span
@@ -94,27 +107,27 @@ export default function Navigation() {
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 z-[100] bg-charcoal/95 backdrop-blur-xl flex items-center justify-center transition-all duration-300 ${
+        className={`fixed inset-0 z-[100] bg-charcoal/98 backdrop-blur-2xl overflow-y-auto pt-24 pb-12 px-6 flex flex-col items-center justify-start sm:justify-center transition-all duration-300 ${
           isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
-        <nav className={`flex flex-col items-center gap-8 transition-transform duration-500 delay-100 ${isMobileMenuOpen ? 'translate-y-0' : 'translate-y-10'}`}>
+        <nav className={`w-full max-w-sm flex flex-col items-center gap-4 sm:gap-6 transition-transform duration-500 delay-100 ${isMobileMenuOpen ? 'translate-y-0' : 'translate-y-6'}`}>
           {navLinks.map((link) => (
-            <div key={link.href}>
+            <div key={link.href} className="w-full text-center">
               <Link
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="font-serif text-3xl text-warm-white hover:text-gold transition-colors block py-2"
+                className="font-serif text-2xl sm:text-3xl text-warm-white hover:text-gold transition-colors block py-1.5"
               >
                 {link.label}
               </Link>
             </div>
           ))}
-          <div className="pt-4">
+          <div className="pt-4 w-full flex justify-center">
             <Link
               href="/booking"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="btn-gold"
+              className="btn-gold text-xs py-3.5 px-8 rounded-full"
             >
               Забронировать
             </Link>
