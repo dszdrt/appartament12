@@ -52,7 +52,13 @@ export default function DashboardCalendar({ bookings }: DashboardCalendarProps) 
       
       <style>{`
         .admin-calendar { --rdp-cell-size: 38px; --rdp-accent-color: #C9A96E; margin: 0 auto; }
-        .admin-calendar .rdp-day_selected { background-color: var(--rdp-accent-color); color: #1a1a1a; font-weight: bold; }
+        .admin-calendar .rdp-day_selected,
+        .admin-calendar .rdp-day_selected:hover,
+        .admin-calendar .rdp-day_selected:focus { 
+          background-color: #C9A96E !important; 
+          color: #1a1a1a !important; 
+          font-weight: bold !important; 
+        }
         .admin-calendar .rdp-nav_button { color: var(--color-gold); }
       `}</style>
       

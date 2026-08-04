@@ -63,7 +63,15 @@ export default function BookingSearchWidget() {
               >
                 <style>{`
                   .rdp { --rdp-cell-size: 40px; --rdp-accent-color: #C9A96E; --rdp-background-color: rgba(201, 169, 110, 0.2); margin: 0; }
-                  .rdp-day_selected { background-color: var(--rdp-accent-color); color: #1a1a1a; font-weight: bold; }
+                  .rdp-day_selected, .rdp-day_selected:hover, .rdp-day_selected:focus { 
+                    background-color: #C9A96E !important; 
+                    color: #1a1a1a !important; 
+                    font-weight: bold !important; 
+                  }
+                  .rdp-day_selected:not([disabled]) {
+                    background-color: #C9A96E !important;
+                    color: #1a1a1a !important;
+                  }
                 `}</style>
                 <DayPicker
                   mode="range"
