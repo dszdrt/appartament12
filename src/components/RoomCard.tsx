@@ -28,8 +28,7 @@ export default function RoomCard({
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "0px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.2), ease: "easeOut" }}
     >
       <Link href={unavailable ? "#" : `/rooms/${slug}`} className={`group block ${unavailable ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}`}>
