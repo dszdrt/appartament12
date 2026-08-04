@@ -42,8 +42,8 @@ export default function BookingForm({ rooms }: { rooms: { id: string, title: str
       return;
     }
 
-    formData.set("arrivalDate", dateRange.from.toISOString());
-    formData.set("departureDate", dateRange.to.toISOString());
+    formData.set("arrivalDate", format(dateRange.from, 'yyyy-MM-dd'));
+    formData.set("departureDate", format(dateRange.to, 'yyyy-MM-dd'));
 
     setLoading(true);
     try {

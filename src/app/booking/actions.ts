@@ -26,7 +26,10 @@ export async function submitBooking(formData: FormData) {
     return { error: "Дата выезда должна быть позже даты заезда" };
   }
 
-  if (arrivalDate < new Date(new Date().setHours(0, 0, 0, 0))) {
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+
+  if (arrivalDate < today) {
     return { error: "Дата заезда не может быть в прошлом" };
   }
 
