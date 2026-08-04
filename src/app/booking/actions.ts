@@ -78,7 +78,8 @@ export async function submitBooking(formData: FormData) {
       },
     });
 
-    revalidatePath("/admin/bookings");
+    revalidatePath("/admin/bookings", "layout");
+    revalidatePath("/admin", "layout");
     return { success: true };
   } catch (err) {
     console.error("Booking creation error:", err);
