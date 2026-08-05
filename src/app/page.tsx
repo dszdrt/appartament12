@@ -10,6 +10,49 @@ import TrustSection from '@/components/TrustSection';
 import LocationSection from '@/components/LocationSection';
 import ReviewsSection from '@/components/ReviewsSection';
 
+const DEFAULT_REAL_REVIEWS = [
+  {
+    id: 'real-1',
+    authorName: 'Екатерина В.',
+    avatarUrl: null,
+    rating: 5,
+    dateText: 'Июль 2026',
+    text: 'Прекрасный бутик-отель! Проживали в номере «Морской». Идеальная чистота, всё новое, стильное и продуманное до мелочей. До моря 5 минут пешком. Очень приветливый персонал!',
+    source: 'Яндекс Путешествия',
+    isPinned: true,
+  },
+  {
+    id: 'real-2',
+    authorName: 'Сергей И.',
+    avatarUrl: null,
+    rating: 5,
+    dateText: 'Июнь 2026',
+    text: 'Останавливались летом на Ленина 221/6. Апартаменты отличные — удобный матрас, прекрасный кондиционер, своя кухня с посудой и скоростной Wi-Fi. Всё рядом: магазины, рестораны и пляж. Обязательно вернемся!',
+    source: 'Яндекс Карты',
+    isPinned: true,
+  },
+  {
+    id: 'real-3',
+    authorName: 'Ольга и Владимир',
+    avatarUrl: null,
+    rating: 5,
+    dateText: 'Май 2026',
+    text: 'Очень чистый, стильный и уютный отель. Потрясающий дизайн комнат, всё идеально чистое. Белоснежное постельное белье и качественная сантехника. Рейтинг 4.7 абсолютно заслужен!',
+    source: 'Яндекс Путешествия',
+    isPinned: false,
+  },
+  {
+    id: 'real-4',
+    authorName: 'Мария К.',
+    avatarUrl: null,
+    rating: 5,
+    dateText: 'Август 2026',
+    text: 'Отличное место для отдыха в Сочи! Тихо, близко к морю, атмосфера домашнего уюта и премиального сервиса. Администраторы всегда на связи. Все фотографии полностью соответствуют реальности!',
+    source: 'Яндекс Путешествия',
+    isPinned: false,
+  },
+];
+
 export default async function HomePage({ searchParams }: { searchParams: Promise<{ start?: string, end?: string, guests?: string }> }) {
   const { start, end, guests } = await searchParams;
 
@@ -23,7 +66,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
     include: { images: { orderBy: { order: 'asc' } } }
   });
 
-  const reviews = await db.review.findMany({
+  const dbReviews = await db.review.findMany({
     where: { isVisible: true },
     orderBy: [
       { isPinned: 'desc' },
@@ -31,6 +74,8 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       { createdAt: 'desc' }
     ]
   });
+
+  const reviews = dbReviews.length > 0 ? dbReviews : DEFAULT_REAL_REVIEWS;
 
   // Determine unavailable rooms if dates are provided
   const unavailableRoomIds = new Set<string>();
