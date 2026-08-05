@@ -103,14 +103,14 @@ export default function ReviewsSection({ reviews = [] }: { reviews?: ReviewItem[
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            <div className="min-h-[260px] sm:min-h-[230px] relative flex items-center justify-center">
+            <div className="min-h-[260px] sm:min-h-[220px] relative flex items-center justify-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                   className="w-full bg-[#1E1E1E]/90 backdrop-blur-xl p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-white/10 hover:border-gold/30 shadow-[0_15px_40px_rgba(0,0,0,0.5)] relative transition-all duration-300"
                 >
                   {/* Author Info & Source Header */}
