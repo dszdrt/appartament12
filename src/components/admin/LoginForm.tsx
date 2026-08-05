@@ -2,11 +2,9 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Loader2, Lock } from "lucide-react";
 
 export default function LoginForm() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [username, setUsername] = useState("");
@@ -30,13 +28,13 @@ export default function LoginForm() {
         } else {
           setError(res.error);
         }
+        setLoading(false);
       } else {
-        router.push("/admin");
-        router.refresh();
+        // Force full browser navigation to dashboard on successful login
+        window.location.href = "/admin";
       }
     } catch (err) {
       setError("Произошла ошибка при входе");
-    } finally {
       setLoading(false);
     }
   };
