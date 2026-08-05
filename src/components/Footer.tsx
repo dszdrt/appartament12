@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { db } from '@/lib/db';
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle, MessageSquare } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 export default async function Footer() {
   const settings = await db.siteSetting.findMany();
@@ -14,7 +14,6 @@ export default async function Footer() {
   const email = config.contactEmail || 'info@apartments12.ru';
   const address = config.contactAddress || 'Краснодарский край, г. Сочи, ул. Ленина, 221/6';
   const hotelName = config.hotelName || 'Apartments12';
-  const maxUrl = config.maxUrl || 'https://max.ru';
 
   // Format phone for tel: link
   const phoneClean = phone.replace(/[^0-9+]/g, '');
@@ -85,7 +84,7 @@ export default async function Footer() {
             </div>
           </div>
 
-          {/* Messengers & Fast Action */}
+          {/* Direct Phone Contact */}
           <div>
             <h3 className="text-gold text-xs tracking-[0.2em] uppercase mb-6 font-semibold">Связь с нами</h3>
             <div className="space-y-3">
@@ -96,36 +95,6 @@ export default async function Footer() {
                 <Phone className="w-4 h-4 text-gold" />
                 <span>{phone}</span>
               </a>
-
-              <div className="pt-2 flex flex-col gap-2.5">
-                <a
-                  href={maxUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gold/20 hover:bg-gold/30 text-gold border border-gold/30 rounded-xl px-4 py-2.5 text-xs font-medium flex items-center justify-center gap-2 transition-all shadow-[0_0_15px_rgba(201,169,110,0.15)]"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Написать в MAX</span>
-                </a>
-                <a
-                  href={`https://wa.me/${phoneClean.replace('+', '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-green-600/20 hover:bg-green-600/30 text-green-400 border border-green-500/30 rounded-xl px-4 py-2.5 text-xs font-medium flex items-center justify-center gap-2 transition-all"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  <span>Написать в WhatsApp</span>
-                </a>
-                <a
-                  href="https://t.me/apartments12_sochi"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 border border-sky-400/30 rounded-xl px-4 py-2.5 text-xs font-medium flex items-center justify-center gap-2 transition-all"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Написать в Telegram</span>
-                </a>
-              </div>
             </div>
           </div>
         </div>
