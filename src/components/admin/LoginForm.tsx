@@ -25,7 +25,11 @@ export default function LoginForm() {
       });
 
       if (res?.error) {
-        setError("Неверное имя пользователя или пароль");
+        if (res.error === "CredentialsSignin") {
+          setError("Неверное имя пользователя или пароль");
+        } else {
+          setError(res.error);
+        }
       } else {
         router.push("/admin");
         router.refresh();
