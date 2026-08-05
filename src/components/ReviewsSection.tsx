@@ -78,7 +78,7 @@ export default function ReviewsSection({ reviews = [] }: { reviews?: ReviewItem[
           <div className="line-gold w-16 sm:w-20 mx-auto mb-6 sm:mb-8" />
 
           {/* Rating Badge */}
-          <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 bg-white/5 border border-white/10 rounded-2xl px-5 sm:px-6 py-3.5 sm:py-4 backdrop-blur-md">
+          <div className="inline-flex flex-col sm:flex-row items-center gap-3 sm:gap-4 bg-white/5 border border-white/10 rounded-2xl px-5 sm:px-6 py-3.5 sm:py-4 backdrop-blur-md shadow-lg">
             <div className="flex items-center gap-2">
               <span className="font-serif text-2xl sm:text-3xl font-bold text-gold">{displayRating}</span>
               <div className="flex text-gold">
@@ -103,7 +103,7 @@ export default function ReviewsSection({ reviews = [] }: { reviews?: ReviewItem[
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
           >
-            <div className="min-h-[260px] sm:min-h-[240px] relative flex items-center justify-center">
+            <div className="min-h-[260px] sm:min-h-[230px] relative flex items-center justify-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
@@ -111,15 +111,13 @@ export default function ReviewsSection({ reviews = [] }: { reviews?: ReviewItem[
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="w-full glass-light p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl border border-white/10 shadow-2xl relative"
+                  className="w-full bg-[#1E1E1E]/90 backdrop-blur-xl p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl border border-white/10 hover:border-gold/30 shadow-[0_15px_40px_rgba(0,0,0,0.5)] relative transition-all duration-300"
                 >
-                  <Quote className="absolute top-4 right-5 sm:top-6 sm:right-8 w-8 h-8 sm:w-14 sm:h-14 text-gold/10 pointer-events-none" />
-
-                  {/* Author Info & Source */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+                  {/* Author Info & Source Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-5 sm:mb-6 border-b border-white/5 pb-4">
                     <div>
-                      <div className="flex items-center gap-2 sm:gap-3 mb-0.5 sm:mb-1">
-                        <h3 className="font-sans text-lg sm:text-2xl text-warm-white font-bold">
+                      <div className="flex items-center gap-2 sm:gap-3 mb-0.5">
+                        <h3 className="font-sans text-base sm:text-xl text-warm-white font-bold">
                           {currentReview.authorName}
                         </h3>
                         {currentReview.isPinned && (
@@ -132,7 +130,7 @@ export default function ReviewsSection({ reviews = [] }: { reviews?: ReviewItem[
                     </div>
 
                     <div className="flex items-center gap-2.5">
-                      <span className="text-[10px] sm:text-xs bg-black/40 text-gold border border-gold/20 px-2.5 py-0.5 sm:py-1 rounded-full font-medium">
+                      <span className="text-[10px] sm:text-xs bg-black/40 text-gold border border-gold/20 px-3 py-1 rounded-full font-medium">
                         {currentReview.source}
                       </span>
                       <div className="flex text-gold">
@@ -150,10 +148,15 @@ export default function ReviewsSection({ reviews = [] }: { reviews?: ReviewItem[
                     </div>
                   </div>
 
-                  {/* Review Text */}
-                  <p className="text-warm-white/80 text-xs sm:text-base md:text-lg leading-relaxed font-light italic">
-                    "{currentReview.text}"
-                  </p>
+                  {/* Review Quote & Text */}
+                  <div className="flex items-start gap-3 sm:gap-4">
+                    <div className="p-2 sm:p-2.5 rounded-xl bg-gold/10 text-gold shrink-0 mt-0.5">
+                      <Quote className="w-4 h-4 sm:w-5 sm:h-5 rotate-180" />
+                    </div>
+                    <p className="text-warm-white/90 text-xs sm:text-base md:text-lg leading-relaxed font-light italic flex-1">
+                      {currentReview.text.replace(/^["«]|["»]$/g, '')}
+                    </p>
+                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
